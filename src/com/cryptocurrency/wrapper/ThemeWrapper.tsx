@@ -1,7 +1,7 @@
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import React, { ReactNode } from 'react'
 import ColorModeContext from '../context/ColorModeContext'
-import { amber, deepOrange } from '@mui/material/colors';
+import { amber, deepOrange, blue } from '@mui/material/colors';
 import CssBaseline from '@mui/material/CssBaseline';
 
 interface Props {
@@ -29,6 +29,10 @@ function ThemeWrapper({ children }: Props) {
                         ? {
                             // palette values for light mode
                             primary: amber,
+                            secondary: {
+                                main: "#eaecef",
+                            },
+                            // secondary: blue[50],
                             divider: amber[200],
                             text: {
                                 primary: '#1e2329',
@@ -37,7 +41,12 @@ function ThemeWrapper({ children }: Props) {
                         }
                         : {
                             // palette values for dark mode
-                            primary: deepOrange,
+                            primary: {
+                                main: '#fcd535',
+                            },
+                            secondary: {
+                                main: '#474d57'
+                            },
                             divider: '#848e9c',
                             background: {
                                 default: '#181a20',
