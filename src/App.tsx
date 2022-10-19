@@ -1,10 +1,10 @@
-import AuthPage from './com/cryptocurrency/page/AuthPage';
+import RegPage from './com/cryptocurrency/page/RegPage';
 import ThemeWrapper from './com/cryptocurrency/wrapper/ThemeWrapper'
 
 function App() {
   return (
     <ThemeWrapper>
-      <AuthPage />
+      <RegPage />
     </ThemeWrapper>
   );
 }
