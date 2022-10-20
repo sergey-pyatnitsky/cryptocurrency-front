@@ -1,11 +1,18 @@
+import { SelectChangeEvent } from '@mui/material';
+import { ChangeEventHandler } from 'react';
 import AuthForm from '../UI/auth/AuthForm';
 import { Navbar } from '../UI/navbar/Navbar';
 
-const AuthPage = () => {
+// interface Props {
+//   currentLocale: string,
+//   handleChangeLanguage: SelectChangeEvent
+// }
+
+const AuthPage = (props: any) => {
 
   return (
     <>
-      <Navbar />
+      <Navbar currentLocale={props.currentLocale} handleChangeLanguage={props.handleChangeLanguage} />
       <AuthForm />
     </>
   )

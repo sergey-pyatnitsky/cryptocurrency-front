@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { ChangeEventHandler, useState } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -15,13 +15,29 @@ import darkLogo from '../../assets/images/icons/darkLogo.svg'
 import lightLogo from '../../assets/images/icons/lightLogo.svg'
 import { ThemeSwitchButton } from "../theme/ThemeSwitchButton";
 import { useTheme } from '@mui/material/styles';
+import { LOCALES } from '../../i18n/locales';
+import { FormattedMessage } from 'react-intl';
+import { useIntl } from 'react-intl'
+import { FormControl, FormHelperText, Select, SelectChangeEvent } from '@mui/material';
+
+// interface Props {
+//   currentLocale: string,
+//   handleChangeLanguage: SelectChangeEvent
+// }
 
 const pages = ['Products', 'Pricing', 'Blog'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const languages = [
+  { name: 'English', code: LOCALES.ENGLISH },
+  { name: 'Русский', code: LOCALES.RUSSIAN }
+]
 
-export function Navbar() {
+export function Navbar(props: any) {
+  const intl = useIntl()
+
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+
   const theme = useTheme();
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -110,6 +126,20 @@ export function Navbar() {
               </Button>
             ))}
           </Box>
+          <FormControl size="small">
+            <Select
+              onChange={props.handleChangeLanguage}
+              defaultValue={props.currentLocale}
+            >
+              {languages.map(languages => {
+                return (
+                  <MenuItem key={languages.code} value={languages.code}>
+                    {languages.name}
+                  </MenuItem>
+                )
+              })}
+            </Select>
+          </FormControl>
           <ThemeSwitchButton />
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">

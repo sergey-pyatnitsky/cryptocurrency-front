@@ -1,11 +1,17 @@
+import { SelectChangeEvent } from '@mui/material';
+import { ChangeEventHandler } from 'react';
 import RegForm from '../UI/auth/RegForm';
 import { Navbar } from '../UI/navbar/Navbar';
 
-const RegPage = () => {
+interface Props {
+  currentLocale: string,
+  handleChangeLanguage: SelectChangeEvent
+}
 
+const RegPage = (props: Props) => {
   return (
     <>
-      <Navbar />
+      <Navbar currentLocale={props.currentLocale} handleChangeLanguage={props.handleChangeLanguage} />
       <RegForm />
     </>
   )

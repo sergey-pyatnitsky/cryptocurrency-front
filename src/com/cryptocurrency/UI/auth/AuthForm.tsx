@@ -4,9 +4,11 @@ import Divider from '@mui/material/Divider';
 import Button from '@mui/material/Button';
 import Link from '@mui/material/Link';
 import Box from '@mui/material/Box';
-import regLink from '../../assets/images/auth.png'
+import regLink from '../../assets/images/auth.png';
+import { useIntl } from 'react-intl';
 
 const AuthForm = () => {
+  const intl = useIntl()
 
   return (
     <Grid
@@ -17,12 +19,11 @@ const AuthForm = () => {
     >
       <Grid
         item
-        direction="column"
         justifyContent="center"
         alignItems="center"
         rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} xs={3}>
         <Grid item>
-          <h1>Binance Login</h1>
+          <h1>{intl.formatMessage({ id: 'login_title' })}</h1>
         </Grid>
         <Grid item>
           <TextField
@@ -45,14 +46,13 @@ const AuthForm = () => {
           />
         </Grid>
         <Grid item>
-          <Button style={{ width: '300px', height: '56px' }} variant="contained">Далее</Button>
+          <Button style={{ width: '300px', height: '56px' }} variant="contained">{intl.formatMessage({ id: 'continue_btn' })}</Button>
         </Grid>
         <Grid item>
           <Divider
             textAlign="center"
             style={{ width: '300px' }}
-          // light={theme === 'dark' ? false : true}>or continue with</Divider>
-          >or continue with</Divider>
+          >{intl.formatMessage({ id: 'continue_with_btn' })}</Divider>
         </Grid>
         <Grid item>
           <Button
@@ -68,14 +68,13 @@ const AuthForm = () => {
                 alt="The house from the offer."
                 src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
               />
-            }>Продолжить с Google
+            }>{intl.formatMessage({ id: 'continue_google_btn' })}
           </Button>
         </Grid>
       </Grid>
 
       <Grid
         item
-        direction="column"
         justifyContent="center"
         alignItems="center"
         rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} xs={3}>
@@ -88,12 +87,12 @@ const AuthForm = () => {
             alt="Register page"
             src={regLink}
           />
-          <h3 style={{ textAlign: 'center' }}>Покупайте криптовалюту за считанные минуты</h3>
+          <h3 style={{ textAlign: 'center' }}>{intl.formatMessage({ id: 'login_image_text' })}</h3>
         </Grid>
         <Grid item justifyContent="center"
           alignItems="center">
           <Link href="#" underline="none" sx={{ width: 100, marginLeft: 12 }}>
-            Создать аккаунт Binance
+            {intl.formatMessage({ id: 'login_reg_link_text' })}
           </Link>
         </Grid>
       </Grid>
