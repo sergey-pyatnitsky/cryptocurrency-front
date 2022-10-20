@@ -91,7 +91,7 @@ const AuthForm = () => {
         </Grid>
         <Grid item justifyContent="center"
           alignItems="center">
-          <Link href="#" underline="none" sx={{ width: 100, marginLeft: 12 }}>
+          <Link color="text" href="#" underline="none" sx={{ width: 100, marginLeft: 12 }}>
             {intl.formatMessage({ id: 'login_reg_link_text' })}
           </Link>
         </Grid>
