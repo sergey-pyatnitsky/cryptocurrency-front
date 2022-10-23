@@ -4,8 +4,10 @@ import { IntlProvider } from "react-intl";
 import { LOCALES } from "./com/cryptocurrency/i18n/locales";
 import { messages } from "./com/cryptocurrency/i18n/messages";
 import { Navbar } from './com/cryptocurrency/UI/navbar/Navbar';
-import AuthPage from './com/cryptocurrency/page/AuthPage';
+import MainPage from './com/cryptocurrency/page/MainPage';
 import { SelectChangeEvent } from '@mui/material';
+import CryptoContext from './com/cryptocurrency/context/CryptoContext';
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 function App() {
   const [currentLocale, setCurrentLocale] = useState(getInitialLocal());
@@ -21,15 +23,23 @@ function App() {
   };
 
   return (
-    <IntlProvider
-      messages={messages[currentLocale]}
-      locale={currentLocale}
-      defaultLocale={LOCALES.RUSSIAN}
-    >
-      <ThemeWrapper>
-        <AuthPage currentLocale={currentLocale} handleChangeLanguage={handleChangeLanguage} />
-      </ThemeWrapper>
-    </IntlProvider>
+    <BrowserRouter>
+      <IntlProvider
+        messages={messages[currentLocale]}
+        locale={currentLocale}
+        defaultLocale={LOCALES.RUSSIAN}
+      >
+        <ThemeWrapper>
+          <CryptoContext>
+            <Routes>
+              <Route path="/" element={<MainPage currentLocale={currentLocale} handleChangeLanguage={handleChangeLanguage} />} />
+              {/* <MainPage currentLocale={currentLocale} handleChangeLanguage={handleChangeLanguage} /> */}
+            </Routes>
+          </CryptoContext>
+
+        </ThemeWrapper>
+      </IntlProvider>
+    </BrowserRouter>
   );
 }
 

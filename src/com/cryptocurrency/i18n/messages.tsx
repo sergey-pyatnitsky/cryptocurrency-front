@@ -14,6 +14,16 @@ export const messages = {
     reg_title: 'Create account',
     reg_auth_link_text: 'Already registered?',
 
+    //Banner
+    banner_text: 'Get all the Info regarding your favorite Crypto Currency',
+
+    //CoinsTable
+    coins_table_title: 'Cryptocurrency Prices',
+    coins_table_search_text: 'Search For a Crypto Currency..',
+    coins_table_column_1: 'Coin',
+    coins_table_column_2: 'Price',
+    coins_table_column_3: '24h Change',
+    coins_table_column_4: 'Market Cap',
   },
   [LOCALES.RUSSIAN]: {
     //Btn
@@ -28,5 +38,15 @@ export const messages = {
     reg_title: 'Создание аккаунта',
     reg_auth_link_text: 'Уже зарегистрированы?',
 
+    //Banner
+    banner_text: 'Получите всю информацию о вашей любимой криптовалюте',
+
+    //CoinsTable
+    coins_table_title: 'Цены на криптовалюту',
+    coins_table_search_text: 'Поиск криптовалюты..',
+    coins_table_column_1: 'Монета',
+    coins_table_column_2: 'Цена',
+    coins_table_column_3: '24ч изменение',
+    coins_table_column_4: 'Капитализация',
   }
 }

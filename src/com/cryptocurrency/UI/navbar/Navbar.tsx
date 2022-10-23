@@ -1,4 +1,4 @@
-import React, { ChangeEventHandler, useState } from 'react';
+import React, { useState } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -16,14 +16,8 @@ import lightLogo from '../../assets/images/icons/lightLogo.svg'
 import { ThemeSwitchButton } from "../theme/ThemeSwitchButton";
 import { useTheme } from '@mui/material/styles';
 import { LOCALES } from '../../i18n/locales';
-import { FormattedMessage } from 'react-intl';
-import { useIntl } from 'react-intl'
-import { FormControl, FormHelperText, Select, SelectChangeEvent } from '@mui/material';
-
-// interface Props {
-//   currentLocale: string,
-//   handleChangeLanguage: SelectChangeEvent
-// }
+import { FormControl, Select } from '@mui/material';
+import { CryptoState } from '../../context/CryptoContext';
 
 const pages = ['Products', 'Pricing', 'Blog'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
@@ -33,7 +27,7 @@ const languages = [
 ]
 
 export function Navbar(props: any) {
-  const intl = useIntl()
+  const { currency, setCurrency } = CryptoState();
 
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
@@ -126,6 +120,20 @@ export function Navbar(props: any) {
               </Button>
             ))}
           </Box>
+
+          <FormControl size="small">
+            <Select
+              variant="outlined"
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={currency}
+              style={{ width: 100, height: 40, marginLeft: 15 }}
+              onChange={(e) => setCurrency(e.target.value)}
+            >
+              <MenuItem value={"USD"}>USD</MenuItem>
+              <MenuItem value={"EUR"}>EUR</MenuItem>
+            </Select>
+          </FormControl>
           <FormControl size="small">
             <Select
               onChange={props.handleChangeLanguage}
@@ -140,6 +148,7 @@ export function Navbar(props: any) {
               })}
             </Select>
           </FormControl>
+
           <ThemeSwitchButton />
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">

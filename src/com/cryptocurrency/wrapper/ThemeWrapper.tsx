@@ -29,20 +29,23 @@ function ThemeWrapper({ children }: Props) {
             ? {
               // palette values for light mode
               primary: {
-                main: '#6EF3D6',
+                main: '#1b9129',
               },
               secondary: {
-                main: "#EBFFFA",
+                main: "#911b83",
               },
               background: {
-                default: '#e0f3f5',
-                paper: '#e0f3f5',
+                default: '#f0f0f0',
+                paper: '#dedede',
               },
               divider: amber[200],
               text: {
                 primary: '#1e2329',
                 secondary: '#2F4f4f',
               },
+              head: {
+                main: "#1b9164",
+              }
             }
             : {
               // palette values for dark mode
@@ -61,6 +64,9 @@ function ThemeWrapper({ children }: Props) {
                 primary: '#eaecef',
                 secondary: '#848e9c',
               },
+              head: {
+                main: "#1b9164",
+              }
             }),
         },
       }),
