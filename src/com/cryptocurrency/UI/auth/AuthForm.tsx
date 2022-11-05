@@ -2,13 +2,47 @@ import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import Divider from '@mui/material/Divider';
 import Button from '@mui/material/Button';
-import Link from '@mui/material/Link';
+import { Link, Route, useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import regLink from '../../assets/images/auth.png';
 import { useIntl } from 'react-intl';
+import { GOOGLE_AUTH_URL } from '../../service/CommonService';
+import AuthenticationService from '../../service/AuthenticationService';
+import { useContext, useState } from 'react';
+import { AuthContext } from '../../context/AuthContext';
+import getDefaultRoleRoute from '../../router/routes';
 
-const AuthForm = () => {
+interface IProps {
+  setRole: React.Dispatch<React.SetStateAction<string | null>>;
+}
+
+const AuthForm = ({ setRole }: IProps) => {
   const intl = useIntl()
+
+  const [credentials, setCredentials] = useState({ username: '', password: '' })
+  const [error, setError] = useState(false)
+  const { setIsAuth } = useContext(AuthContext)
+  const route = useNavigate();
+
+  function login(e: any) {
+    e.preventDefault();
+    AuthenticationService.tryToLogin(credentials.username, credentials.password)
+      .then(resp => {
+        console.log(resp)
+
+        const role = AuthenticationService.getMainRoleFromDecodedJwtToken(resp.data)
+
+        setError(false)
+        setRole(role)
+        setIsAuth(true)
+        AuthenticationService.saveRoleLoggedUserToSessionStorage(role)
+        AuthenticationService.saveBearerAuthTokenToSessionStorage(resp.data);
+        route(getDefaultRoleRoute(role))
+      }).catch(err => {
+        console.log(err)
+        // setError("Invalid email or password");
+      })
+  }
 
   return (
     <Grid
@@ -33,6 +67,7 @@ const AuthForm = () => {
             placeholder="admin"
             helperText="Incorrect entry."
             sx={{ width: "300px" }}
+            onChange={(e) => setCredentials({ ...credentials, username: e.target.value })}
           />
         </Grid>
         <Grid item>
@@ -43,10 +78,18 @@ const AuthForm = () => {
             placeholder="@Admin123"
             helperText="Incorrect entry."
             sx={{ width: "300px" }}
+            onChange={(e) => setCredentials({ ...credentials, password: e.target.value })}
           />
         </Grid>
         <Grid item>
-          <Button style={{ width: '300px', height: '56px' }} variant="contained">{intl.formatMessage({ id: 'continue_btn' })}</Button>
+          <Button
+            style={{
+              width: '300px',
+              height: '56px'
+            }}
+            variant="contained"
+            onClick={login}
+          >{intl.formatMessage({ id: 'continue_btn' })}</Button>
         </Grid>
         <Grid item>
           <Divider
@@ -62,6 +105,7 @@ const AuthForm = () => {
             }}
             color="secondary"
             variant="contained"
+            component={Link} to={GOOGLE_AUTH_URL}
             startIcon={
               <Box
                 component="img"
@@ -91,7 +135,9 @@ const AuthForm = () => {
         </Grid>
         <Grid item justifyContent="center"
           alignItems="center">
-          <Link color="text" href="#" underline="none" sx={{ width: 100, marginLeft: 12 }}>
+          <Link to="/registration" color="secondary"
+            style={{ textDecoration: "none", width: 100, marginLeft: 90 }}
+          >
             {intl.formatMessage({ id: 'login_reg_link_text' })}
           </Link>
         </Grid>

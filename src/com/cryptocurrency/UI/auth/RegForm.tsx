@@ -2,13 +2,44 @@ import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import Divider from '@mui/material/Divider';
 import Button from '@mui/material/Button';
-import Link from '@mui/material/Link';
+import { Link } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import regLink from '../../assets/images/auth.png'
 import { useIntl } from 'react-intl';
+import { useState } from 'react';
+import RegistrationService from '../../service/RegistrationService';
+import { useNavigate } from 'react-router-dom';
 
 const RegForm = () => {
   const intl = useIntl()
+
+  const route = useNavigate();
+  // const [info, setInfo] = useState({ username: '', password: '', email: '', name: '' });
+  const [info, setInfo] = useState({ user: { username: '', password: '' }, email: '', name: '' });
+  const [fieldError, setFieldError] = useState("");
+  const [repeatPassword, setRepeatPassword] = useState('');
+
+  function registration(e: any) {
+    e.preventDefault();
+    if (checkForPasswordCoincidence(info.user.password, repeatPassword)) {
+      setFieldError("");
+      RegistrationService.register(info).then(resp => {
+        route("/login")
+      }).catch(err => {
+        console.log(err.response.data)
+        let errorData = err.response.data
+        console.log(errorData)
+        // bindErrorFields(errorData);
+      })
+    } else {
+      console.log("fuild")
+      // setFieldError({ ...fieldError, fieldRepeatPassword: "Passwords not match" });
+    }
+  }
+
+  function checkForPasswordCoincidence(password: string, repeatPassword: string) {
+    return password == repeatPassword
+  }
 
   return (
     <Grid
@@ -34,6 +65,7 @@ const RegForm = () => {
             placeholder="admin"
             helperText="Incorrect entry."
             sx={{ width: "300px" }}
+            onChange={(e) => { setInfo({ ...info, user: { ...info.user, username: e.target.value } }) }}
           />
           <TextField
             id="password-input"
@@ -41,6 +73,7 @@ const RegForm = () => {
             placeholder="@Admin123"
             helperText="Incorrect entry."
             sx={{ width: "300px", marginTop: 1 }}
+            onChange={(e) => { setInfo({ ...info, user: { ...info.user, password: e.target.value } }) }}
           />
           <TextField
             id="password-repeat-input"
@@ -48,6 +81,7 @@ const RegForm = () => {
             placeholder="@Admin123"
             helperText="Incorrect entry."
             sx={{ width: "300px", marginTop: 1 }}
+            onChange={(e) => { setRepeatPassword(e.target.value) }}
           />
           <TextField
             error
@@ -56,6 +90,7 @@ const RegForm = () => {
             helperText="Incorrect entry."
             placeholder="Иванов Иван Иванович"
             sx={{ width: "300px", marginTop: 1 }}
+            onChange={(e) => { setInfo({ ...info, name: e.target.value }) }}
           />
           <TextField
             id="email-input"
@@ -63,10 +98,16 @@ const RegForm = () => {
             helperText="Incorrect entry."
             placeholder="admin123@gmail.com"
             sx={{ width: "300px", marginTop: 1 }}
+            onChange={(e) => { setInfo({ ...info, email: e.target.value }) }}
           />
         </Grid>
         <Grid item sx={{ marginTop: 1 }}>
-          <Button style={{ width: '300px', height: '56px' }} variant="contained">{intl.formatMessage({ id: 'continue_btn' })}</Button>
+          <Button
+            style={{ width: '300px', height: '56px' }} variant="contained"
+            onClick={registration}
+          >
+            {intl.formatMessage({ id: 'continue_btn' })}
+          </Button>
         </Grid>
         <Grid item>
           <Divider
@@ -113,7 +154,9 @@ const RegForm = () => {
         <Grid item justifyContent="center"
           alignItems="center" sx={{ marginLeft: 10 }}>
           {intl.formatMessage({ id: 'reg_auth_link_text' })}
-          <Link href="#" underline="none" sx={{ width: 100, marginLeft: 1 }}>
+          <Link to="/login" color="secondary"
+            style={{ textDecoration: "none", width: 100, marginLeft: 90 }}
+          >
             Войти
           </Link>
         </Grid>

@@ -8,10 +8,9 @@ interface Props {
   handleChangeLanguage: SelectChangeEvent
 }
 
-const RegPage = (props: Props) => {
+const RegPage = () => {
   return (
     <>
-      <Navbar currentLocale={props.currentLocale} handleChangeLanguage={props.handleChangeLanguage} />
       <RegForm />
     </>
   )

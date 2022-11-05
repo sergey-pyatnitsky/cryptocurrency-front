@@ -4,6 +4,8 @@ export const messages = {
   [LOCALES.ENGLISH]: {
     //Btn
     continue_btn: 'Next',
+    yes_btn: 'Yes',
+    no_btn: 'No',
 
     //AuthReg Form
     login_title: 'Binance Login',
@@ -13,6 +15,9 @@ export const messages = {
     login_reg_link_text: 'Create a Binance Account',
     reg_title: 'Create account',
     reg_auth_link_text: 'Already registered?',
+
+    //Logout
+    logout_title: 'Do you really want to log out?',
 
     //Banner
     banner_text: 'Get all the Info regarding your favorite Crypto Currency',
@@ -28,6 +33,8 @@ export const messages = {
   [LOCALES.RUSSIAN]: {
     //Btn
     continue_btn: 'Далее',
+    yes_btn: 'Да',
+    no_btn: 'Нет',
 
     //AuthReg From
     login_title: 'Binance Login',
@@ -37,6 +44,9 @@ export const messages = {
     login_reg_link_text: 'Создать аккаунт Binance',
     reg_title: 'Создание аккаунта',
     reg_auth_link_text: 'Уже зарегистрированы?',
+
+    //Logout
+    logout_title: 'Вы действительно хотите выйти из системы?',
 
     //Banner
     banner_text: 'Получите всю информацию о вашей любимой криптовалюте',
