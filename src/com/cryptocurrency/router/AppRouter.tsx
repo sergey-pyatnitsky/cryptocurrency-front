@@ -5,6 +5,7 @@ import { privateRoutes } from "./routes";
 import RegPage from '../page/RegPage';
 import LoginPage from '../page/LoginPage';
 import MainPage from '../page/MainPage';
+import CoinPage from '../page/CoinPage';
 
 interface IProps {
   setRole: React.Dispatch<React.SetStateAction<string | null>>;
@@ -36,6 +37,12 @@ const AppRouter = ({ setRole }: IProps) => {
           element={<LoginPage setRole={setRole} />}
           path={'/login'}
           key={'/login'}>
+        </Route>
+
+        <Route
+          element={<CoinPage />}
+          path={'/coins/:id'}
+          key={'/coins/:id'}>
         </Route>
 
         <Route

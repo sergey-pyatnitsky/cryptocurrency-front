@@ -17,12 +17,14 @@ import axios from "axios";
 import { CryptoState } from "../../context/CryptoContext";
 import { CoinList } from "../../config/api";
 import { useIntl } from 'react-intl';
+import { useNavigate } from 'react-router-dom';
 
-export function numberWithCommas(x: any) {
+export function numberWithCommas(x: number) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
 export default function CoinsTable() {
+  const navigate = useNavigate();
   const intl = useIntl()
 
   const [coins, setCoins] = useState([]);
@@ -99,6 +101,7 @@ export default function CoinsTable() {
                   const profit: any = row.price_change_percentage_24h > 0;
                   return (
                     <TableRow
+                      onClick={() => navigate(`/coins/${row.id}`)}
                       sx={{
                         cursor: "pointer",
                         fontFamily: "Montserrat",
