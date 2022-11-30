@@ -1,19 +1,17 @@
-import { LinearProgress, makeStyles, Typography, Grid, Box, Button, Tooltip, Divider } from "@mui/material";
+import { LinearProgress, Typography, Grid, Box, Button, Tooltip } from "@mui/material";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import ReactHtmlParser from "react-html-parser";
 import { SingleCoin } from "../config/api";
 import { CryptoState } from "../context/CryptoContext";
-import CoinInfo from "../UI/coin/chart/CoinChart";
 import { numberWithCommas } from "../UI/table/CoinsTable";
 import NotificationsActiveOutlinedIcon from '@mui/icons-material/NotificationsActiveOutlined';
 import StarBorderPurple500OutlinedIcon from '@mui/icons-material/StarBorderPurple500Outlined';
-
+import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import CoinMarketInfo from "../UI/coin/header/CoinMarketInfo";
 import CoinDescription from "../UI/coin/header/CoinDescription";
-import CoinChart from "../UI/coin/chart/CoinChart";
 import CoinTab from "../UI/coin/CoinTab";
+import EditCoinModal from "../UI/coin/EditCoinModal";
 
 type mapWithStringKeyAndNumberValue = {
   [key: string]: number
@@ -44,7 +42,11 @@ interface ICoinProps {
   market_cap_rank: number
 }
 
-const CoinPage = () => {
+interface ICoinPageProps {
+  role: string | null
+}
+
+const CoinPage = ({ role }: ICoinPageProps) => {
   const { id } = useParams();
   const [coin, setCoin] = useState<ICoinProps>();
 
@@ -60,60 +62,10 @@ const CoinPage = () => {
     fetchCoin();
   }, []);
 
-  //   const clesses = {
-  //     container: {
-  //       display: "flex",
-  //       // [theme.breakpoints.down("md")]: {
-  //       //   flexDirection: "column",
-  //       //   alignItems: "center",
-  //       // },
-  //     },
-  //     sidebar: {
-  //       width: "30%",
-  //       // [theme.breakpoints.down("md")]: {
-  //       //   width: "100%",
-  //       // },
-  //       display: "flex",
-  //       flexDirection: "column",
-  //       alignItems: "center",
-  //       marginTop: 25,
-  //       borderRight: "2px solid grey",
-  //     },
-  //     heading: {
-  //       fontWeight: "bold",
-  //       marginBottom: 20,
-  //       fontFamily: "Montserrat",
-  //     },
-  //     description: {
-  //       width: "100%",
-  //       fontFamily: "Montserrat",
-  //       padding: 25,
-  //       paddingBottom: 15,
-  //       paddingTop: 0,
-  //       textAlign: "justify",
-  //     },
-  //     marketData: {
-  //       alignSelf: "start",
-  //       padding: 25,
-  //       paddingTop: 10,
-  //       width: "100%",
-  //       // [theme.breakpoints.down("md")]: {
-  //       //   display: "flex",
-  //       //   justifyContent: "space-around",
-  //       // },
-  //       // [theme.breakpoints.down("sm")]: {
-  //       //   flexDirection: "column",
-  //       //   alignItems: "center",
-  //       // },
-  //       // [theme.breakpoints.down("xs")]: {
-  //       //   alignItems: "start",
-  //       // },
-  //     },
-  //   }
-
-
-
-  //   // const classes = useStyles();
+  //Modal handlers
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   if (!coin) return <LinearProgress style={{ backgroundColor: "gold" }} />;
   console.log(coin)
@@ -130,7 +82,24 @@ const CoinPage = () => {
           </Grid>
           <Grid item xs={10} >
             <Typography variant="h6" >
-              <Box sx={{ fontWeight: 'bold' }}>{coin?.name + " (" + coin?.symbol.toUpperCase() + ")"}</Box>
+              <Box sx={{ fontWeight: 'bold' }}
+              >
+                {coin?.name + " (" + coin?.symbol.toUpperCase() + ")"}
+                {
+                  role != null && role == 'ADMIN'
+                    ? (
+                      <>
+                        <Button
+                          onClick={handleOpen}
+                          sx={{ minWidth: 0 }}
+                        >
+                          <ModeEditIcon sx={{ marginLeft: 0.1, height: 20 }} />
+                        </Button>
+                        <EditCoinModal open={open} handleClose={handleClose} coin={coin} />
+                      </>
+                    ) : (<></>)
+                }
+              </Box>
             </Typography>
           </Grid>
           <Grid item xs={5}>
@@ -157,10 +126,16 @@ const CoinPage = () => {
         <Grid container spacing={2} sx={{ width: 250, marginTop: 1 }}>
           <Grid item xs={12}>
             <Tooltip title="Add Price Alert">
-              <Button variant="outlined" sx={{ height: 35, marginRight: 1 }}><NotificationsActiveOutlinedIcon /></Button>
+              <Button variant="outlined" sx={{ height: 35, marginRight: 1 }}
+              >
+                <NotificationsActiveOutlinedIcon />
+              </Button>
             </ Tooltip>
             <Tooltip title="Add to Porfolio and track coin price">
-              <Button variant="outlined" sx={{ height: 35, marginRight: 1 }}><StarBorderPurple500OutlinedIcon /></Button>
+              <Button variant="outlined" sx={{ height: 35, marginRight: 1 }}
+              >
+                <StarBorderPurple500OutlinedIcon />
+              </Button>
             </Tooltip>
           </Grid>
         </Grid>

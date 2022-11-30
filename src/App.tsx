@@ -45,7 +45,7 @@ function App() {
           <ThemeWrapper>
             <CryptoContext>
               <Navbar role={role} setRole={setRole} isAuth={isAuth} currentLocale={currentLocale} handleChangeLanguage={handleChangeLanguage} />
-              <AppRouter setRole={setRole} />
+              <AppRouter setRole={setRole} role={role} />
             </CryptoContext>
           </ThemeWrapper>
         </IntlProvider>

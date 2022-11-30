@@ -8,10 +8,11 @@ import MainPage from '../page/MainPage';
 import CoinPage from '../page/CoinPage';
 
 interface IProps {
-  setRole: React.Dispatch<React.SetStateAction<string | null>>;
+  setRole: React.Dispatch<React.SetStateAction<string | null>>
+  role: string | null
 }
 
-const AppRouter = ({ setRole }: IProps) => {
+const AppRouter = ({ setRole, role }: IProps) => {
   const { isAuth } = useContext(AuthContext);
 
   return (
@@ -40,7 +41,7 @@ const AppRouter = ({ setRole }: IProps) => {
         </Route>
 
         <Route
-          element={<CoinPage />}
+          element={<CoinPage role={role} />}
           path={'/coins/:id'}
           key={'/coins/:id'}>
         </Route>
