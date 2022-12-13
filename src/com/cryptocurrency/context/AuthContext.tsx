@@ -1,7 +1,10 @@
 import { createContext } from "react";
 
 interface IContextProps {
-  isAuth: boolean,
+  auth: {
+    isAuth: boolean
+    userId: number
+  }
   setIsAuth: React.Dispatch<React.SetStateAction<boolean>>
 }
 

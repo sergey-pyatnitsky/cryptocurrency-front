@@ -35,7 +35,13 @@ function App() {
 
   return (
     <AuthContext.Provider value={
-      { isAuth, setIsAuth }}>
+      {
+        auth: {
+          isAuth: isAuth,
+          userId: 0
+        },
+        setIsAuth
+      }}>
       <BrowserRouter>
         <IntlProvider
           messages={messages[currentLocale]}

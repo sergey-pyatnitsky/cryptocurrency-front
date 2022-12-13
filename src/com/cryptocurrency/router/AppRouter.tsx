@@ -6,6 +6,10 @@ import RegPage from '../page/RegPage';
 import LoginPage from '../page/LoginPage';
 import MainPage from '../page/MainPage';
 import CoinPage from '../page/CoinPage';
+import PortfolioPage from '../page/PortfolioPage';
+import FavoritesPage from '../page/FavoritePage';
+import ProfilePage from '../page/ProfilePage';
+import UsersPage from '../page/UsersPage';
 
 interface IProps {
   setRole: React.Dispatch<React.SetStateAction<string | null>>
@@ -13,10 +17,10 @@ interface IProps {
 }
 
 const AppRouter = ({ setRole, role }: IProps) => {
-  const { isAuth } = useContext(AuthContext);
+  const { auth } = useContext(AuthContext)
 
   return (
-    isAuth ?
+    auth.isAuth ?
       <Routes>
         {
           privateRoutes.map(route =>
@@ -25,6 +29,31 @@ const AppRouter = ({ setRole, role }: IProps) => {
               path={route.path}
               key={route.path} />)
         }
+        <Route
+          element={<PortfolioPage userId={auth.userId} />}
+          path={'/portfolio'}
+          key={'/portfolio'}>
+        </Route>
+        <Route
+          element={<UsersPage />}
+          path={'/users'}
+          key={'/users'}>
+        </Route>
+        <Route
+          element={<ProfilePage />}
+          path={'/profile'}
+          key={'/profile'}>
+        </Route>
+        <Route
+          element={<FavoritesPage userId={auth.userId} />}
+          path={'/favorites'}
+          key={'/favorites'}>
+        </Route>
+        <Route
+          element={<CoinPage role={role} />}
+          path={'/coins/:id'}
+          key={'/coins/:id'}>
+        </Route>
       </Routes>
       :
       <Routes>
@@ -45,6 +74,8 @@ const AppRouter = ({ setRole, role }: IProps) => {
           path={'/coins/:id'}
           key={'/coins/:id'}>
         </Route>
+
+
 
         <Route
           element={<RegPage />}
