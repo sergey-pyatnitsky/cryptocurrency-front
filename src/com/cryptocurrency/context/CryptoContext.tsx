@@ -9,12 +9,16 @@ interface IContextProps {
 const Crypto = createContext({} as IContextProps);
 
 const CryptoContext = ({ children }: any) => {
-  const [currency, setCurrency] = useState("USD");
+  const currencyFromStorage = localStorage.getItem("currency");
+  const currencySymbol = currencyFromStorage == "USD" ? "$" : "€"
+  const [currency, setCurrency] = useState<string>(currencyFromStorage != null ? currencyFromStorage : "USD");
   const [symbol, setSymbol] = useState("$");
 
   useEffect(() => {
     if (currency === "EUR") setSymbol("€");
     else if (currency === "USD") setSymbol("$");
+
+    localStorage.setItem("currency", currency)
   }, [currency]);
 
   return (
