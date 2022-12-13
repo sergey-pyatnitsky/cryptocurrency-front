@@ -2,7 +2,7 @@ import { LinearProgress, Typography, Grid, Box, Button, Tooltip } from "@mui/mat
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { SingleCoin } from "../config/api";
+import { AddFavoriteCoin, SingleCoin } from "../config/api";
 import { CryptoState } from "../context/CryptoContext";
 import { numberWithCommas } from "../UI/table/CoinsTable";
 import NotificationsActiveOutlinedIcon from '@mui/icons-material/NotificationsActiveOutlined';
@@ -49,12 +49,12 @@ interface ICoinPageProps {
 const CoinPage = ({ role }: ICoinPageProps) => {
   const { id } = useParams();
   const [coin, setCoin] = useState<ICoinProps>();
+  const [favorite, setFavorite] = useState<boolean>();
 
   const { currency, symbol } = CryptoState();
 
   const fetchCoin = async () => {
     const { data } = await axios.get(SingleCoin(id));
-    console.log(data)
     setCoin(data);
   };
 
@@ -67,8 +67,16 @@ const CoinPage = ({ role }: ICoinPageProps) => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  const handleFavorites = async (coin_id: string | undefined) => {
+    axios.defaults.headers.common['Authorization'] = sessionStorage.getItem("token")
+
+    await axios.post(AddFavoriteCoin(coin_id, sessionStorage.getItem("username")),)
+      .then(function (response) {
+        if (response.status == 200) setFavorite(true);
+      });;
+  }
+
   if (!coin) return <LinearProgress style={{ backgroundColor: "gold" }} />;
-  console.log(coin)
   return (
     <>
       <div style={{ marginLeft: 100, marginTop: 50, marginRight: 100 }}>
@@ -118,7 +126,7 @@ const CoinPage = ({ role }: ICoinPageProps) => {
               color: coin?.market_data.market_cap_change_percentage_24h > 0 ? "rgb(14, 203, 129)" : "red"
             }}>
               {coin?.market_data.market_cap_change_percentage_24h > 0 ? '+' : ''}
-              {Math.round(coin?.market_data.market_cap_change_percentage_24h).toString() + "%"}
+              {(Math.round(coin?.market_data.market_cap_change_percentage_24h * 10) / 10).toString() + "%"}
             </Box>
           </Grid>
         </Grid>
@@ -131,8 +139,14 @@ const CoinPage = ({ role }: ICoinPageProps) => {
                 <NotificationsActiveOutlinedIcon />
               </Button>
             </ Tooltip>
-            <Tooltip title="Add to Porfolio and track coin price">
-              <Button variant="outlined" sx={{ height: 35, marginRight: 1 }}
+            <Tooltip title="Добавить в отслеживаемые">
+              <Button
+                variant="outlined"
+                sx={{ height: 35, marginRight: 1 }}
+                onClick={(e) => {
+                  handleFavorites(id);
+                }
+                }
               >
                 <StarBorderPurple500OutlinedIcon />
               </Button>

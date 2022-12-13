@@ -45,8 +45,6 @@ const CoinChart = ({ coin }: any) => {
     setHistoricData(data.prices);
   };
 
-  console.log(coin);
-
   useEffect(() => {
     fetchHistoricData();
   }, [days]);

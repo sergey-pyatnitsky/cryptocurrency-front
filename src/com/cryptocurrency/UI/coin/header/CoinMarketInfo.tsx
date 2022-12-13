@@ -97,7 +97,7 @@ const CoinMarketInfo = ({ coin }: any) => {
                 {symbol + " "}
                 {
                   numberWithCommas(
-                    coin?.market_data.fully_diluted_valuation[currency.toLowerCase()])
+                    Number(coin?.market_data.fully_diluted_valuation[currency.toLowerCase()]))
                 }
               </Typography>
             </Grid>

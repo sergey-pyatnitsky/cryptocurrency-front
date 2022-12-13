@@ -11,6 +11,7 @@ import {
   TableContainer,
   Table,
   Paper,
+  Button
 } from "@mui/material";
 import Pagination from '@mui/material/Pagination';
 import axios from "axios";
@@ -18,6 +19,7 @@ import { CryptoState } from "../../context/CryptoContext";
 import { CoinList } from "../../config/api";
 import { useIntl } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
+import { Toolbar } from '@mui/material';
 
 interface ICoinProps {
   "id": string,
@@ -49,20 +51,21 @@ export function numberWithCommas(x: number) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
-export default function CoinsTable() {
+const ChooseCoinsTable = (props: any) => {
   const navigate = useNavigate();
   const intl = useIntl()
 
   const [coins, setCoins] = useState([]);
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState("");
+  const [isInput, setIsInput] = useState<boolean>(false);
+  const [key, setKey] = useState<string>("");
   const [page, setPage] = useState(1);
 
   const { currency, symbol } = CryptoState();
 
   const fetchCoins = async () => {
     setLoading(true);
-    // let config = { headers: { Authorization: sessionStorage.getItem("token"), } }
     const { data } = await axios.get(CoinList(currency, search));
 
     setCoins(data);
@@ -81,14 +84,19 @@ export default function CoinsTable() {
     );
   };
 
+  const handleSelectCount = (key: string) => {
+    setIsInput(true)
+    setKey(key)
+
+  }
+
+  const handleAddCoinPortfolio = () => {
+    setIsInput(false)
+    props.addPortfolioCoin()
+  }
+
   return (
     <Container style={{ textAlign: "center" }}>
-      <Typography
-        variant="h4"
-        style={{ margin: 18, fontFamily: "Montserrat" }}
-      >
-        {intl.formatMessage({ id: 'coins_table_title' })}
-      </Typography>
       <TextField
         label={intl.formatMessage({ id: 'coins_table_search_text' })}
         variant="outlined"
@@ -106,7 +114,7 @@ export default function CoinsTable() {
                   intl.formatMessage({ id: 'coins_table_column_1' }),
                   intl.formatMessage({ id: 'coins_table_column_2' }),
                   intl.formatMessage({ id: 'coins_table_column_3' }),
-                  intl.formatMessage({ id: 'coins_table_column_4' })].map((head) => (
+                  intl.formatMessage({ id: 'coins_table_column_4' }), 'Действие'].map((head) => (
                     <TableCell
                       style={{
                         fontWeight: "700",
@@ -128,7 +136,7 @@ export default function CoinsTable() {
                   const profit: any = row.coinMarket[0].priceChangePercentage24h > 0;
                   return (
                     <TableRow
-                      onClick={() => navigate(`/coins/${row.id}`)}
+                      // onClick={() => navigate(`/coins/${row.coin.id}`)}
                       sx={{
                         cursor: "pointer",
                         fontFamily: "Montserrat",
@@ -186,6 +194,39 @@ export default function CoinsTable() {
                         )}
                         M
                       </TableCell>
+                      {/* <TableCell align="right">
+                        <TextField
+                          id="outlined-error-helper-text"
+                          label="Количество"
+                          sx={{ width: "70%", height: "70%" }}
+                        // onChange={(e) => setPortfolio({ ...portfolio, name: e.target.value })}
+                        />
+                      </TableCell> */}
+                      <TableCell align="right">
+                        {
+                          isInput && key == row.name
+                            ? (
+                              <>
+                                <Button variant="contained" onClick={handleAddCoinPortfolio}>Добавить</Button>
+                                <TextField
+                                  id="outlined-error-helper-text"
+                                  size="small"
+                                  label="Количество"
+                                  sx={{ width: "50%", height: "70%", marginLeft: 1 }}
+                                  onChange={(e) =>
+                                    props.setPortfolioCoinDto({
+                                      ...props.portfolioCoinDto,
+                                      quantity: e.target.value,
+                                      coinId: row.id,
+                                      buyPrice: row.coinMarket[0].currentPrice,
+                                      username: sessionStorage.getItem("username"),
+                                    })}
+                                />
+                              </>
+                            )
+                            : <Button variant="contained" onClick={(e) => handleSelectCount(row.name)}>Выбрать</Button>
+                        }
+                      </TableCell>
                     </TableRow>
                   );
                 })}
@@ -193,20 +234,22 @@ export default function CoinsTable() {
           </Table>
         )}
       </TableContainer>
-
+      {/* 
       <Pagination
         count={Number((handleSearch()?.length / 10).toFixed(0))}
         style={{
           padding: 20,
           width: "100%",
-          display: "flex",
-          justifyContent: "center",
+                        display: "flex",
+                        justifyContent: "center",
         }}
-        onChange={(_, value) => {
-          setPage(value);
-          window.scroll(0, 450);
-        }}
-      />
+                        onChange={(_, value) => {
+                          setPage(value);
+                          window.scroll(0, 450);
+                        }}
+      /> */}
     </Container>
   );
 }
+
+export default ChooseCoinsTable;

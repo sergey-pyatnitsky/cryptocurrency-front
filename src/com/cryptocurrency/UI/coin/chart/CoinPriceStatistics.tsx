@@ -25,7 +25,7 @@ const CoinPriceStatistics = ({ coin }: any) => {
         }}
       >
         <Typography variant="h5">
-          <Box sx={{ fontWeight: 'bold' }}>{coin?.symbol.toUpperCase() + " Price Statistics"}</Box>
+          <Box sx={{ fontWeight: 'bold' }}>{coin?.symbol.toUpperCase() + " Статистика Цены"}</Box>
         </Typography>
         <Grid container spacing={2} sx={{ marginTop: 2 }}>
           <Grid item xs={12}>

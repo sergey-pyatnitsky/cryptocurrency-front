@@ -12,8 +12,6 @@ const CoinConverter = ({ coin }: any) => {
   const handleNumberChange = (e: any) => {
     const onlyNums = e.target.value.replace(/[^0-9]/g, '');
     setInputValue(onlyNums)
-    // console.log(onlyNums)
-    // console.log(inputValue)
     handleConverterChange(onlyNums)
   }
 
