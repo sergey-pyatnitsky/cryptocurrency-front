@@ -2,7 +2,7 @@ import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import Divider from '@mui/material/Divider';
 import Button from '@mui/material/Button';
-import { Link, Route, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import regLink from '../../assets/images/auth.png';
 import { useIntl } from 'react-intl';
@@ -57,7 +57,8 @@ const AuthForm = ({ setRole }: IProps) => {
         alignItems="center"
         rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} xs={3}>
         <Grid item>
-          <h1>{intl.formatMessage({ id: 'login_title' })}</h1>
+          <h1>Авторизация
+          </h1>
         </Grid>
         <Grid item>
           <TextField
@@ -65,18 +66,15 @@ const AuthForm = ({ setRole }: IProps) => {
             id="username-input"
             label="Username/Email"
             placeholder="admin"
-            helperText="Incorrect entry."
-            sx={{ width: "300px" }}
+            sx={{ width: "300px", marginBottom: 1 }}
             onChange={(e) => setCredentials({ ...credentials, username: e.target.value })}
           />
         </Grid>
         <Grid item>
           <TextField
-            error
             id="password-input"
-            label="Password"
+            label="Пароль"
             placeholder="@Admin123"
-            helperText="Incorrect entry."
             sx={{ width: "300px" }}
             onChange={(e) => setCredentials({ ...credentials, password: e.target.value })}
           />
@@ -138,7 +136,7 @@ const AuthForm = ({ setRole }: IProps) => {
           <Link to="/registration" color="secondary"
             style={{ textDecoration: "none", width: 100, marginLeft: 90 }}
           >
-            {intl.formatMessage({ id: 'login_reg_link_text' })}
+            Создать аккаунт
           </Link>
         </Grid>
       </Grid>

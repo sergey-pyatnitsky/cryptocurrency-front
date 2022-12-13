@@ -55,7 +55,7 @@ const RegForm = () => {
         alignItems="center"
         rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} xs={3}>
         <Grid item>
-          <h1>{intl.formatMessage({ id: 'login_title' })}</h1>
+          <h1>Регистрация</h1>
         </Grid>
         <Grid item>
           <TextField
@@ -63,31 +63,28 @@ const RegForm = () => {
             id="username-input"
             label="Username/Email"
             placeholder="admin"
-            helperText="Incorrect entry."
+            // helperText="Incorrect entry."
             sx={{ width: "300px" }}
             onChange={(e) => { setInfo({ ...info, user: { ...info.user, username: e.target.value } }) }}
           />
           <TextField
             id="password-input"
-            label="Password"
+            label="Пароль"
             placeholder="@Admin123"
-            helperText="Incorrect entry."
             sx={{ width: "300px", marginTop: 1 }}
             onChange={(e) => { setInfo({ ...info, user: { ...info.user, password: e.target.value } }) }}
           />
           <TextField
             id="password-repeat-input"
-            label="Password"
+            label="Пароль"
             placeholder="@Admin123"
-            helperText="Incorrect entry."
             sx={{ width: "300px", marginTop: 1 }}
             onChange={(e) => { setRepeatPassword(e.target.value) }}
           />
           <TextField
-            error
             id="name-input"
-            label="Name"
-            helperText="Incorrect entry."
+            label="ФИО"
+
             placeholder="Иванов Иван Иванович"
             sx={{ width: "300px", marginTop: 1 }}
             onChange={(e) => { setInfo({ ...info, name: e.target.value }) }}
@@ -95,7 +92,6 @@ const RegForm = () => {
           <TextField
             id="email-input"
             label="Email"
-            helperText="Incorrect entry."
             placeholder="admin123@gmail.com"
             sx={{ width: "300px", marginTop: 1 }}
             onChange={(e) => { setInfo({ ...info, email: e.target.value }) }}
