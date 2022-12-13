@@ -6,6 +6,8 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { useState } from 'react';
 import Logout from './Logout';
+import { Link } from 'react-router-dom';
+import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 
 interface IProps {
@@ -50,13 +52,23 @@ const SettingsButton = (props: IProps) => {
         open={Boolean(anchorElUser)}
         onClose={handleCloseUserMenu}
       >
+        <MenuItem key="Profile" onClick={handleCloseUserMenu}>
+          <Link to="/profile" style={{ textDecoration: 'none' }}>
+            <Typography
+              textAlign="center"
+              variant="button"
+            >
+              Профиль
+            </Typography>
+          </Link>
+        </MenuItem>
         <MenuItem key="Logout" onClick={handleCloseUserMenu}>
           <Typography
             textAlign="center"
             variant="button"
             onClick={handleOpen}
           >
-            Logout
+            Выйти
           </Typography>
         </MenuItem>
       </Menu>

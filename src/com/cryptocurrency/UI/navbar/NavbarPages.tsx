@@ -24,21 +24,29 @@ const NavbarPages = (props: IProps) => {
       case 'ADMIN':
         return (
           <>
-            <Link to="/" style={{ textDecoration: 'none' }}>
+            <Link to="/favorites" style={{ textDecoration: 'none' }}>
               <Button
-                key='login'
+                key='Favorites'
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
-                Admin - Login
+                Отслеживание монет
+              </Button>
+            </Link>
+            <Link to="/portfolio" style={{ textDecoration: 'none' }}>
+              <Button
+                key='Portfolio'
+                sx={{ my: 2, color: 'white', display: 'block' }}
+              >
+                Портфолио
               </Button>
             </Link>
 
-            <Link to="/" style={{ textDecoration: 'none' }}>
+            <Link to="/users" style={{ textDecoration: 'none' }}>
               <Button
-                key='login'
+                key='Users'
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
-                Admin - Login2
+                Пользователи
               </Button>
             </Link>
           </>
@@ -46,21 +54,21 @@ const NavbarPages = (props: IProps) => {
       case 'USER':
         return (
           <>
-            <Link to="/" style={{ textDecoration: 'none' }}>
+            <Link to="/favorites" style={{ textDecoration: 'none' }}>
               <Button
-                key='login'
+                key='Favorites'
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
-                User - Login
+                Отслеживание монет
               </Button>
             </Link>
 
-            <Link to="/" style={{ textDecoration: 'none' }}>
+            <Link to="/portfolio" style={{ textDecoration: 'none' }}>
               <Button
-                key='login'
+                key='Portfolio'
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
-                User - Login2
+                Портфолио
               </Button>
             </Link>
           </>
