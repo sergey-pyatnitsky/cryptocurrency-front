@@ -3,6 +3,7 @@ import { LOCALES } from './locales';
 export const messages = {
   [LOCALES.ENGLISH]: {
     //Error
+    error_alert: 'Unexpected error',
       //Alert Title
     error: 'Error',
     success: "Success",
@@ -23,10 +24,17 @@ export const messages = {
     login_reg_link_text: 'Create an account',
     reg_title: 'Create account',
     reg_auth_link_text: 'Already registered?',
+    pass_text: 'Password',
+    full_name_text: 'Full name',
+    full_name_placeholder: 'Ivanov Ivan Ivanovich',
       //Auth Error
     error_user_not_found: "User not found",
     error_invalid_password: "Invalid password",
     error_access_denied: "Access denied",
+      //Reg Error
+    error_repeat_password: "The password doesn't match or empty",
+    error_user_exists: "This user already exists",
+    error_invalid_data: "Incorrect data entry",
 
     //Logout
     logout_title: 'Do you really want to log out?',
@@ -44,6 +52,7 @@ export const messages = {
   },
   [LOCALES.RUSSIAN]: {
     //Error
+    error_alert: 'Unexpected error',
       //Alert Title
     error: 'Ошибка',
     success: "Успешно",
@@ -64,10 +73,17 @@ export const messages = {
     login_reg_link_text: 'Создать аккаунт',
     reg_title: 'Создание аккаунта',
     reg_auth_link_text: 'Уже зарегистрированы?',
+    pass_text: 'Пароль',
+    full_name_text: 'ФИО',
+    full_name_placeholder: 'Иванов Иван Иванович',
       //Auth Error
     error_user_not_found: "Пользователь не найден",
     error_invalid_password: "Неверный пароль",
     error_access_denied: "Доступ запрещен",
+      //Reg Error
+    error_repeat_password: "Пароль не совпадает или пуст",
+    error_user_exists: "Данный пользователь уже существует",
+    error_invalid_data: "Неверный ввод данных",
 
     //Logout
     logout_title: 'Вы действительно хотите выйти из системы?',
