@@ -13,9 +13,6 @@ export const ActivateUser = (username: string, active: boolean) =>
 export const RemoveUser = (username: string) =>
   `http://localhost:8080/user/remove/` + username;
 
-export const AddFavoriteCoin = (coin_id: string | undefined, username: string | null) =>
-  `http://localhost:8080/coin/favorite/add?coin_id=` + coin_id + `&username=` + username;
-
 export const GetFavoriteCoins = (username: string | null, currency: string) =>
   `http://localhost:8080/coin/favorite/all?username=` + username + `&currency=` + currency.toLowerCase();
 
@@ -33,6 +30,3 @@ export const FavoritesCoinList = (currency: any) =>
 
 export const SingleCoin = (id: any) =>
   `https://api.coingecko.com/api/v3/coins/${id}`;
-
-export const HistoricalChart = (id: any, days = 365, currency: any) =>
-  `https://api.coingecko.com/api/v3/coins/${id}/market_chart?vs_currency=${currency}&days=${days}`;
