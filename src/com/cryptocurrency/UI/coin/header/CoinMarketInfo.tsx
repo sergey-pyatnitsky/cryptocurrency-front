@@ -1,129 +1,124 @@
-import { Typography, Grid, Tooltip, Divider } from "@mui/material";
+import {Divider, Grid, Tooltip, Typography} from "@mui/material";
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
-import { numberWithCommas } from "../../table/CoinsTable";
-import { CryptoState } from "../../../context/CryptoContext";
+import {numberWithCommas} from "../../table/CoinsTable";
+import {CryptoState} from "../../../context/CryptoContext";
+import CoinProps from "../../../model/coin";
+import {useIntl} from "react-intl";
 
-const CoinMarketInfo = ({ coin }: any) => {
-  const { currency, symbol } = CryptoState();
+interface ICoinMarketInfoProps {
+  coin: CoinProps
+}
+
+const CoinMarketInfo = ({coin}: ICoinMarketInfoProps) => {
+  const intl = useIntl()
+  const {symbol} = CryptoState();
   return (
     <>
-      <Grid container spacing={2} sx={{ marginTop: 2 }}>
+      <Grid container spacing={2} sx={{marginTop: 2}}>
         <Grid item xs={6}>
-          <Grid container spacing={2} >
+          <Grid container spacing={2}>
             <Grid item xs={6}>
-              <Typography variant="subtitle2" sx={{ display: "flex", justifyContent: "flex-start" }}>
-                Рыночная капитализация
-                <Tooltip title="Market Cap = Current Price x Circulating Supply. Refers to the total market value of 
-                  a cryptocurrency’s circulating supply. It is similar to the stock market’s measurement of multiplying 
-                  price per share by shares readily available in the market (not held & locked by insiders, governments)">
-                  <HelpOutlineIcon />
+              <Typography variant="subtitle2" sx={{display: "flex", justifyContent: "flex-start"}}>
+                {intl.formatMessage({id: 'market_cap'})}
+                <Tooltip title={intl.formatMessage({id: 'market_cap_info'})}>
+                  <HelpOutlineIcon/>
                 </Tooltip>
               </Typography>
             </Grid>
             <Grid item xs={6}>
-              <Typography variant="subtitle2" sx={{ display: "flex", justifyContent: "flex-end" }}>
+              <Typography variant="subtitle2" sx={{display: "flex", justifyContent: "flex-end"}}>
                 {symbol + " "}
                 {
-                  numberWithCommas(
-                    coin?.market_data.market_cap[currency.toLowerCase()]
-                  )
+                  numberWithCommas(coin.coinMarket[0].marketCap)
                 }
               </Typography>
             </Grid>
           </Grid>
-          <Divider />
+          <Divider/>
         </Grid>
 
         <Grid item xs={6}>
-          <Grid container spacing={2} >
+          <Grid container spacing={2}>
             <Grid item xs={6}>
-              <Typography variant="subtitle2" sx={{ display: "flex", justifyContent: "flex-start" }}>
-                В обращении
-                <Tooltip title="Количество монет, которые выпущены в публичное обращение. 
-                  Сравните с доступными на рынке акциями, которые не находятся во владении инсайдеров и правительств.">
-                  <HelpOutlineIcon />
+              <Typography variant="subtitle2" sx={{display: "flex", justifyContent: "flex-start"}}>
+                {intl.formatMessage({id: 'circulating_supply'})}
+                <Tooltip title={intl.formatMessage({id: 'circulating_supply_info'})}>
+                  <HelpOutlineIcon/>
                 </Tooltip>
               </Typography>
             </Grid>
             <Grid item xs={6}>
-              <Typography variant="subtitle2" sx={{ display: "flex", justifyContent: "flex-end" }}>
+              <Typography variant="subtitle2" sx={{display: "flex", justifyContent: "flex-end"}}>
                 {symbol + " "}
                 {
-                  numberWithCommas(
-                    coin?.market_data.market_cap[currency.toLowerCase()]
-                  )
+                  numberWithCommas(coin.coinMarket[0].marketCap)
                 }
               </Typography>
             </Grid>
           </Grid>
-          <Divider />
+          <Divider/>
         </Grid>
 
 
         <Grid item xs={6}>
-          <Grid container spacing={2} >
+          <Grid container spacing={2}>
             <Grid item xs={6}>
-              <Typography variant="subtitle2" sx={{ display: "flex", justifyContent: "flex-start" }}>
-                Общее предложение
-                <Tooltip title="Количество уже созданных монет, за исключением тех, что были сожжены (убраны из обращения). 
-                  Сравните с количеством акций, выпущенных в обращение.Общий объем предложения = объем предложения ончейн – сожженные токены">
-                  <HelpOutlineIcon />
+              <Typography variant="subtitle2" sx={{display: "flex", justifyContent: "flex-start"}}>
+                {intl.formatMessage({id: 'total_supply'})}
+                <Tooltip title={intl.formatMessage({id: 'total_supply_info'})}>
+                  <HelpOutlineIcon/>
                 </Tooltip>
               </Typography>
             </Grid>
             <Grid item xs={6}>
-              <Typography variant="subtitle2" sx={{ display: "flex", justifyContent: "flex-end" }}>
-                {coin?.market_data.total_supply}
+              <Typography variant="subtitle2" sx={{display: "flex", justifyContent: "flex-end"}}>
+                {coin.coinMarket[0].totalSupply}
               </Typography>
             </Grid>
           </Grid>
-          <Divider />
+          <Divider/>
         </Grid>
 
         <Grid item xs={6}>
-          <Grid container spacing={2} >
+          <Grid container spacing={2}>
             <Grid item xs={6}>
-              <Typography variant="subtitle2" sx={{ display: "flex", justifyContent: "flex-start" }}>
-                Полностью разбавленная капитализация
-                <Tooltip title="FDV = текущая цена x максимальное количество монет. Это рыночная капитализация при условии, 
-                  что в обращение выпущено максимальное количество монет. Показатель FDV достигается за 3, 5, 10 
-                  или более лет, в зависимости от графика выпуска.">
-                  <HelpOutlineIcon />
+              <Typography variant="subtitle2" sx={{display: "flex", justifyContent: "flex-start"}}>
+                {intl.formatMessage({id: 'fully_diluted_valuation'})}
+                <Tooltip title={intl.formatMessage({id: 'fully_diluted_valuation_info'})}>
+                  <HelpOutlineIcon/>
                 </Tooltip>
               </Typography>
             </Grid>
             <Grid item xs={6}>
-              <Typography variant="subtitle2" sx={{ display: "flex", justifyContent: "flex-end" }}>
+              <Typography variant="subtitle2" sx={{display: "flex", justifyContent: "flex-end"}}>
                 {symbol + " "}
                 {
-                  numberWithCommas(
-                    Number(coin?.market_data.fully_diluted_valuation[currency.toLowerCase()]))
+                  numberWithCommas(coin.coinMarket[0].fullyDilutedValuation)
                 }
               </Typography>
             </Grid>
           </Grid>
-          <Divider />
+          <Divider/>
         </Grid>
 
         <Grid item xs={6}>
-          <Grid container spacing={2} >
+          <Grid container spacing={2}>
             <Grid item xs={6}>
-              <Typography variant="subtitle2" sx={{ display: "flex", justifyContent: "flex-start" }}>
-                Максимальный объем
-                <Tooltip title="Максимальное количество монет, прописанное в коде блокчейна. Его можно сравнить с 
-                  максимальным количеством акций, которые можно выпустить на рынок. Максимальное количество монет = теоретический максимум, прописанный в коде">
-                  <HelpOutlineIcon />
+              <Typography variant="subtitle2" sx={{display: "flex", justifyContent: "flex-start"}}>
+                {intl.formatMessage({id: 'max_supply'})}
+                <Tooltip title={intl.formatMessage({id: 'max_supply_info'})}>
+                  <HelpOutlineIcon/>
                 </Tooltip>
               </Typography>
             </Grid>
             <Grid item xs={6}>
-              <Typography variant="subtitle2" sx={{ display: "flex", justifyContent: "flex-end" }}>
-                {coin?.market_data.max_supply}
+              <Typography variant="subtitle2" sx={{display: "flex", justifyContent: "flex-end"}}>
+                {coin.coinMarket[0].maxSupply}
               </Typography>
             </Grid>
           </Grid>
         </Grid>
-        <Divider />
+        <Divider/>
       </Grid>
     </>
   )

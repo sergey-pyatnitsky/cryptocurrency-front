@@ -1,15 +1,29 @@
-import { Typography, Box } from "@mui/material";
-import ReactHtmlParser from "react-html-parser";
+import {Box, Typography} from "@mui/material";
+import CoinProps from "../../../model/coin";
+import {useIntl} from "react-intl";
 
-const CoinDescription = ({ coin }: any) => {
+interface ICoinDescriptionProps {
+  coin: CoinProps
+}
+
+const CoinDescription = ({coin}: ICoinDescriptionProps) => {
+  const intl = useIntl()
+
+  let locale
+  (localStorage.getItem('locale') == null)
+    ? locale = "ru-RU"
+    : locale = localStorage.getItem('locale')
+
   return (
-    <div style={{ marginTop: 15, marginBottom: 10 }}>
+    <div style={{marginTop: 15, marginBottom: 10}}>
       <Typography variant="h4">
-        <Box sx={{ fontWeight: 'bold' }}>Информация</Box>
+        <Box sx={{fontWeight: 'bold'}}>{intl.formatMessage({id: 'info'})}</Box>
       </Typography>
       <Typography variant="subtitle1">
-        {ReactHtmlParser(coin?.description.en.split(". ")[0])}.
-      </Typography >
+        {
+          locale === "ru-RU" ? coin.ruDescription : coin.enDescription
+        }
+      </Typography>
     </div>
   )
 }
