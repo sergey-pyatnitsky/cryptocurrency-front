@@ -14,11 +14,13 @@ interface CoinProps {
     }]
     fullyDilutedValuation: number
     high24h: number
+    low24h: number
     lastUpdated: string
     marketCap: number
     marketCapChangePercentage24h: number
     priceChangePercentage24h: number
     totalSupply: number
+    maxSupply: number
   }]
 }
 
