@@ -1,19 +1,5 @@
-import { SelectChangeEvent } from '@mui/material';
-import { ChangeEventHandler } from 'react';
-import RegForm from '../UI/auth/RegForm';
-import { Navbar } from '../UI/navbar/Navbar';
+import RegForm from "../UI/auth/RegForm";
 
-interface Props {
-  currentLocale: string,
-  handleChangeLanguage: SelectChangeEvent
-}
-
-const RegPage = () => {
-  return (
-    <>
-      <RegForm />
-    </>
-  )
-}
+const RegPage = () => <RegForm />;
 
 export default RegPage;
