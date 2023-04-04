@@ -44,6 +44,26 @@ class CoinService {
     return await axios.get(`http://localhost:8080/coin/user_coin_info?coin_id=${coin_id}&username=${username}`)
   }
 
+  async fetchFavoriteCoins(username: string | null, currency: string) {
+    axios.defaults.headers.common['Authorization'] = sessionStorage.getItem("token")
+    return await axios.get(`http://localhost:8080/coin/favorite/all?username=${username}&currency=${currency.toLowerCase()}`)
+  }
+  
+  async fetchPriceAlerts(username: string | null) {
+    axios.defaults.headers.common['Authorization'] = sessionStorage.getItem("token")
+    return await axios.get(`http://localhost:8080/coin/price_alerts/all?username=${username}`)
+  }
+
+  async removeFavoriteCoin(coin_id: string, username: string | null) {
+    axios.defaults.headers.common['Authorization'] = sessionStorage.getItem("token")
+    return await axios.delete(`http://localhost:8080/coin/favorite/remove?username=${username}&coin_id=${coin_id}`)
+  }
+
+  async removePriceAlert(coin_id: string, username: string | null) {
+    axios.defaults.headers.common['Authorization'] = sessionStorage.getItem("token")
+    return await axios.delete(`http://localhost:8080/coin/price_alerts/remove?username=${username}&coin_id=${coin_id}`)
+  }
+
 }
 
 export default new CoinService();
