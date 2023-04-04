@@ -14,15 +14,16 @@ import { useNavigate } from "react-router-dom";
 import { CryptoState } from "../../context/CryptoContext";
 import CoinProps from "../../model/coin";
 import ErrorProps from "../../model/error";
+import PriceAlertProps from "../../model/priceAlert";
 import ResponseProps from "../../model/response";
 import CoinService from "../../service/CoinService";
 import { numberWithCommas } from "./CoinsTable";
 
-export default function FavoritesCoinsTable() {
+const PriceAlertsTable = () => {
   const navigate = useNavigate();
   const intl = useIntl();
 
-  const [coins, setCoins] = useState([]);
+  const [priceAlerts, setPriceAlerts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState("");
   const [pageSize, setPageSize] = useState<number>(5);
@@ -30,23 +31,25 @@ export default function FavoritesCoinsTable() {
   const { currency, symbol } = CryptoState();
 
   const handleSearch = () => {
-    return coins.filter(
-      (coin: CoinProps) =>
-        coin.name.toLowerCase().includes(search) ||
-        coin.symbol.toLowerCase().includes(search)
+    return priceAlerts.filter(
+      (priceAlert: PriceAlertProps) =>
+        priceAlert.coin.symbol.toLowerCase().includes(search) ||
+        priceAlert.coin.name.toLowerCase().includes(search)
     );
   };
 
-  const rows: GridRowsProp = handleSearch().map((coin: CoinProps) => {
-    return {
-      id: coin.id,
-      col1: coin.name,
-      col2: coin.coinMarket[0].currentPrice,
-      col3: coin.coinMarket[0].priceChangePercentage24h,
-      col4: coin.coinMarket[0].marketCap,
-      col5: coin,
-    };
-  });
+  const rows: GridRowsProp = handleSearch().map(
+    (priceAlert: PriceAlertProps) => {
+      return {
+        id: priceAlert.coin.id,
+        col1: priceAlert.coin.name,
+        col2: priceAlert.coin.coinMarket[0].currentPrice,
+        col3: priceAlert.coin.coinMarket[0].priceChangePercentage24h,
+        col4: priceAlert.price,
+        col5: priceAlert,
+      };
+    }
+  );
 
   let locale;
   localStorage.getItem("locale") == null ||
@@ -55,34 +58,37 @@ export default function FavoritesCoinsTable() {
     : (locale = undefined);
 
   useEffect(() => {
-    setLoading(true);
-    fetchFavoriteCoins();
+    fetchPriceAlerts();
   }, [currency]);
 
-  const fetchFavoriteCoins = () => {
-    CoinService.fetchFavoriteCoins(sessionStorage.getItem("username"), currency)
+  const fetchPriceAlerts = () => {
+    setLoading(true);
+    CoinService.fetchPriceAlerts(sessionStorage.getItem("username"))
       .then((resp: ResponseProps) => {
-        setCoins(resp.data);
-        setLoading(false);
+        setPriceAlerts(resp.data.alerts);
       })
       .catch((err: ErrorProps) => {
         console.log(err);
+      })
+      .finally(() => {
         setLoading(false);
       });
   };
 
-  const deleteFavoriteCoin = useCallback(
+  const deletePriceAlert = useCallback(
     (coin_id: GridRowId) => () => {
-      CoinService.removeFavoriteCoin(
+      CoinService.removePriceAlert(
         coin_id.toString(),
         sessionStorage.getItem("username")
       )
         .then((resp: ResponseProps) => {
           if (resp.status === 200) {
-            fetchFavoriteCoins();
+            fetchPriceAlerts();
           }
         })
-        .catch((err: ErrorProps) => console.log(err));
+        .catch((err: ErrorProps) =>
+          console.log(err)
+        );
     },
     []
   );
@@ -99,17 +105,17 @@ export default function FavoritesCoinsTable() {
           return (
             <>
               <img
-                src={params.row.col5.image}
-                alt={params.row.col5.name}
+                src={params.row.col5.coin.image}
+                alt={params.row.col5.coin.name}
                 height="50"
                 style={{ marginBottom: 10 }}
               />
               <div style={{ display: "flex", flexDirection: "column" }}>
                 <span style={{ textTransform: "uppercase", fontSize: 22 }}>
-                  {params.row.col5.symbol}
+                  {params.row.col5.coin.symbol}
                 </span>
                 <span style={{ color: "darkgrey" }}>
-                  {params.row.col5.name}
+                  {params.row.col5.coin.name}
                 </span>
               </div>
             </>
@@ -125,9 +131,11 @@ export default function FavoritesCoinsTable() {
         renderCell: (params: any) => {
           return (
             <>
-              {symbol}{" "}
+              {symbol.toString()}{" "}
               {numberWithCommas(
-                Number(params.row.col5.coinMarket[0].currentPrice.toFixed(2))
+                Number(
+                  params.row.col5.coin.coinMarket[0].currentPrice.toFixed(2)
+                )
               )}
             </>
           );
@@ -141,7 +149,7 @@ export default function FavoritesCoinsTable() {
         headerName: intl.formatMessage({ id: "coins_table_column_3" }),
         renderCell: (params: any) => {
           const profit: any =
-            params.row.col5.coinMarket[0].priceChangePercentage24h > 0;
+            params.row.col5.coin.coinMarket[0].priceChangePercentage24h > 0;
           return (
             <div
               style={{
@@ -150,7 +158,7 @@ export default function FavoritesCoinsTable() {
               }}
             >
               {profit && "+"}
-              {params.row.col5.coinMarket[0].priceChangePercentage24h.toFixed(
+              {params.row.col5.coin.coinMarket[0].priceChangePercentage24h.toFixed(
                 2
               )}
               %
@@ -163,19 +171,13 @@ export default function FavoritesCoinsTable() {
         flex: 1,
         minWidth: 100,
         maxWidth: 200,
-        headerName: intl.formatMessage({ id: "coins_table_column_4" }),
+        headerName: intl.formatMessage({ id: "coins_table_column_5" }),
         renderCell: (params: any) => {
           return (
             <>
-              {symbol}{" "}
-              {numberWithCommas(
-                Number(
-                  params.row.col5.coinMarket[0].marketCap
-                    .toString()
-                    .slice(0, -6)
-                )
-              )}
-              M
+              {params.row.col5.designation.symbol +
+                " " +
+                numberWithCommas(params.row.col5.price)}
             </>
           );
         },
@@ -188,7 +190,7 @@ export default function FavoritesCoinsTable() {
           <GridActionsCellItem
             icon={<DeleteIcon />}
             label="Delete"
-            onClick={deleteFavoriteCoin(params.id)}
+            onClick={deletePriceAlert(params.id)}
           />,
         ],
       },
@@ -242,4 +244,6 @@ export default function FavoritesCoinsTable() {
       )}
     </Container>
   );
-}
+};
+
+export default PriceAlertsTable;
