@@ -36,7 +36,7 @@ const AppRouter = ({ setRole, role }: IProps) => {
         key={"/profile"}
       ></Route>
       <Route
-        element={<FavoritesPage userId={auth.userId} />}
+        element={<FavoritesPage />}
         path={"/favorites"}
         key={"/favorites"}
       ></Route>
