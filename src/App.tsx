@@ -11,6 +11,16 @@ import { AuthContext } from './com/cryptocurrency/context/AuthContext';
 import AppRouter from './com/cryptocurrency/router/AppRouter';
 import { LOCALE_KEY, LOGGED_USER_ROLE_KEY, TOKEN_KEY } from './com/cryptocurrency/service/CommonService';
 
+declare global {
+  namespace React {
+    interface DOMAttributes<T> {
+      onResize?: ReactEventHandler<T> | undefined;
+      onResizeCapture?: ReactEventHandler<T> | undefined;
+      nonce?: string | undefined;
+    }
+  }
+}
+
 function App() {
   const [currentLocale, setCurrentLocale] = useState(getInitialLocal());
   const [isAuth, setIsAuth] = useState(false)

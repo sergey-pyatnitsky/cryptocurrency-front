@@ -1,15 +1,22 @@
-import {
-  Typography,
-  Box
-} from "@mui/material";
-import { chartDays } from "../../../config/data";
+import {Box, Typography} from "@mui/material";
+import {chartDays} from "../../../config/data";
 import SelectButton from "../SelectButton";
+import {useIntl} from "react-intl";
 
-const CoinChartHeader = (props: any) => {
+interface ICoinChartHeaderProps {
+  coinName: string
+  days: number
+  setDays: any
+  setFlag: any
+}
+
+const CoinChartHeader = (props: ICoinChartHeaderProps) => {
+  const intl = useIntl()
+
   return (
     <>
-      <Typography variant="h5" sx={{ marginLeft: 5 }}>
-        <Box sx={{ fontWeight: 'bold' }}>Bitcoin Price Chart</Box>
+      <Typography component={'div'} variant="h5" sx={{marginLeft: 5}}>
+        <Box sx={{fontWeight: 'bold'}}>{props.coinName + " " + intl.formatMessage({id: 'price_chart'})} </Box>
       </Typography>
       <div
         style={{
@@ -23,7 +30,7 @@ const CoinChartHeader = (props: any) => {
             key={day.value}
             onClick={() => {
               props.setDays(day.value);
-              props.setflag(false);
+              props.setFlag(false);
             }}
             selected={day.value === props.days}
           >

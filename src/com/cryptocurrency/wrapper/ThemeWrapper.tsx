@@ -1,14 +1,14 @@
-import { ThemeProvider, createTheme } from '@mui/material/styles';
-import React, { ReactNode } from 'react'
+import {createTheme, ThemeProvider} from '@mui/material/styles';
+import React, {ReactNode} from 'react'
 import ColorModeContext from '../context/ColorModeContext'
-import { amber, deepOrange, blue } from '@mui/material/colors';
+import {amber} from '@mui/material/colors';
 import CssBaseline from '@mui/material/CssBaseline';
 
 interface Props {
   children?: ReactNode
 }
 
-function ThemeWrapper({ children }: Props) {
+function ThemeWrapper({children}: Props) {
 
   const [mode, setMode] = React.useState<'light' | 'dark'>('light');
   const colorMode = React.useMemo(
@@ -58,7 +58,7 @@ function ThemeWrapper({ children }: Props) {
               divider: '#848e9c',
               background: {
                 default: '#181a20',
-                paper: '#181a20',
+                paper: '#414146',
               },
               text: {
                 primary: '#eaecef',
@@ -76,7 +76,7 @@ function ThemeWrapper({ children }: Props) {
   return (
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
-        <CssBaseline />
+        <CssBaseline/>
         {children}
       </ThemeProvider>
     </ColorModeContext.Provider>
