@@ -2,7 +2,6 @@ import {useEffect, useState} from "react";
 import {Line} from "react-chartjs-2";
 import {CircularProgress, Grid} from "@mui/material";
 import {CryptoState} from "../../../context/CryptoContext";
-import "chart.js/auto";
 import CoinChartHeader from "./CoinChartHeader";
 import CoinService from "../../../service/CoinService";
 import ResponseProps from "../../../model/response";
