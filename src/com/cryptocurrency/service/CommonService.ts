@@ -1,4 +1,4 @@
-export const API_BASE_URL = "http://localhost:8080";
+export const API_BASE_URL = `http://${process.env.REACT_APP_BACKEND_HOST}:${process.env.REACT_APP_BACKEND_PORT}`;
 export const API_DOWNLOAD_PROFILE_IMAGE_URL = "/profile/downloadFile/";
 
 export const TOKEN_KEY = "token";
