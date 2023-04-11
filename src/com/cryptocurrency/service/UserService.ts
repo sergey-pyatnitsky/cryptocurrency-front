@@ -2,37 +2,37 @@ import axios from "axios";
 import ProfileProps from "../model/profile";
 import { API_BASE_URL } from "./CommonService";
 
-class UserService {
+export default class UserService {
 
-    async fetchProfileInfo(username:string | null) {
-      axios.defaults.headers.common['Authorization'] = sessionStorage.getItem("token")
-      return axios.get(API_BASE_URL + '/user/profile/' + username)
+    static async fetchProfileInfo(username:string | null) {
+        axios.defaults.headers.common['Authorization'] = sessionStorage.getItem("token")
+        return axios.get(API_BASE_URL + '/user/profile/' + username)
     }
 
-    async fetchAllUsers() {
+    static async fetchAllUsers() {
       axios.defaults.headers.common['Authorization'] = sessionStorage.getItem("token")
       return axios.get(API_BASE_URL + '/user/get_all')
     }
 
-    async editUserRole(username: string | undefined, role: string) {
+    static async editUserRole(username: string | undefined, role: string) {
       axios.defaults.headers.common['Authorization'] = sessionStorage.getItem("token")
       return axios.put(API_BASE_URL + `/user/change_role/${username}/${role}`)
     }
-    
-    async activateUser(username: string, active: boolean) {
+
+    static async activateUser(username: string, active: boolean) {
       axios.defaults.headers.common['Authorization'] = sessionStorage.getItem("token")
       return axios.put(API_BASE_URL + `/user/activate/${username}/${active}`)
     }
 
-    async removeUser(username: string) {
+    static async removeUser(username: string) {
       axios.defaults.headers.common['Authorization'] = sessionStorage.getItem("token")
       return axios.delete(API_BASE_URL + `/user/remove/${username}`)
     }
 
-    async saveProfileImage(file: Blob ,  username: string | null) {
+    static async saveProfileImage(file: Blob ,  username: string | null) {
       axios.defaults.headers.common['Authorization'] = sessionStorage.getItem("token")
-      var formData = new FormData();
-      formData.append("file", file);
+        let formData = new FormData();
+        formData.append("file", file);
       return await axios.post(`http://localhost:8080/profile/uploadFile/${username}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
@@ -40,7 +40,7 @@ class UserService {
     })
     }
 
-    async changeUserInfo(profileInfo: ProfileProps ,  username: string | null) {
+    static async changeUserInfo(profileInfo: ProfileProps ,  username: string | null) {
       axios.defaults.headers.common['Authorization'] = sessionStorage.getItem("token")
       return await axios.post(`http://localhost:8080/user/profile/edit/${username}`, 
       {
@@ -52,7 +52,7 @@ class UserService {
       })
     }
 
-    async changeUserPassword(old_password:string, password: string ,  username: string | null) {
+    static async changeUserPassword(old_password:string, password: string ,  username: string | null) {
       axios.defaults.headers.common['Authorization'] = sessionStorage.getItem("token")
       return await axios.post(`http://localhost:8080/user/profile/edit_password/${username}?old_pass=${old_password}`, 
       {
@@ -61,5 +61,3 @@ class UserService {
       })
     }
 }
-
-export default new UserService();

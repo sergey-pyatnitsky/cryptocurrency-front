@@ -9,27 +9,27 @@ export interface JwtPayload {
     sub: string;
   }
 
-class AuthenticationService {
-    tryToLogin(username:string, password:string) {
+export default class AuthenticationService {
+    static tryToLogin(username:string, password:string) {
         return axios.post(API_BASE_URL + '/auth/authenticate', {
             username, 
             password
         })
     }
 
-    saveBearerAuthTokenToSessionStorage(token:string){
+    static saveBearerAuthTokenToSessionStorage(token:string){
         sessionStorage.setItem(TOKEN_KEY, TOKEN_HEADER + token)
     }
 
-    saveRoleLoggedUserToSessionStorage(role:string){
+    static saveRoleLoggedUserToSessionStorage(role:string){
         sessionStorage.setItem(LOGGED_USER_ROLE_KEY, role)
     }
-    
-    saveUsernameLoggedUserToSessionStorage(username:string){
+
+    static saveUsernameLoggedUserToSessionStorage(username:string){
         sessionStorage.setItem(LOGGED_USER_USERNAME_KEY, username)
     }
 
-    getMainRoleFromDecodedJwtToken(token:string){
+    static getMainRoleFromDecodedJwtToken(token:string){
         const payload = jwtDecode(token) as JwtPayload;
         console.log(payload);
         const role = payload.scopes.split(",")[0];
@@ -39,5 +39,3 @@ class AuthenticationService {
     }
 
 }
-
-export default new AuthenticationService();
