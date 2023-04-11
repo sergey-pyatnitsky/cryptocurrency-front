@@ -227,7 +227,7 @@ const UsersTable = () => {
         ],
       },
     ],
-    [deleteUser, changeUserActiveStatus]
+    [deleteUser, changeUserActiveStatus, intl]
   );
 
   let locale;
