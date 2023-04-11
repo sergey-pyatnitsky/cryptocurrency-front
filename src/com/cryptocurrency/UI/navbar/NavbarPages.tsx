@@ -17,66 +17,67 @@ const NavbarPages = (props: IProps) => {
   const theme = useTheme();
   const [navLinks, setNavLinks] = useState<React.ReactNode>();
 
-  useEffect(() => setNavLinks(getNavLinks()), [props.role, props.isAuth]);
+  useEffect(() => {
+    const navLinks = () => {
+        switch (props.role) {
+          case "ADMIN":
+            return (
+              <>
+                <Link to="/favorites" style={{ textDecoration: "none" }}>
+                  <Button
+                    key="Favorites"
+                    sx={{ my: 2, color: "white", display: "block" }}
+                  >
+                    {intl.formatMessage({ id: "coin_tracking" })}
+                  </Button>
+                </Link>
+                <Link to="/portfolio" style={{ textDecoration: "none" }}>
+                  <Button
+                    key="Portfolio"
+                    sx={{ my: 2, color: "white", display: "block" }}
+                  >
+                    {intl.formatMessage({ id: "portfolio" })}
+                  </Button>
+                </Link>
 
-  const getNavLinks = () => {
-    switch (props.role) {
-      case "ADMIN":
-        return (
-          <>
-            <Link to="/favorites" style={{ textDecoration: "none" }}>
-              <Button
-                key="Favorites"
-                sx={{ my: 2, color: "white", display: "block" }}
-              >
-                {intl.formatMessage({ id: "coin_tracking" })}
-              </Button>
-            </Link>
-            <Link to="/portfolio" style={{ textDecoration: "none" }}>
-              <Button
-                key="Portfolio"
-                sx={{ my: 2, color: "white", display: "block" }}
-              >
-                {intl.formatMessage({ id: "portfolio" })}
-              </Button>
-            </Link>
+                <Link to="/users" style={{ textDecoration: "none" }}>
+                  <Button
+                    key="Users"
+                    sx={{ my: 2, color: "white", display: "block" }}
+                  >
+                    {intl.formatMessage({ id: "users" })}
+                  </Button>
+                </Link>
+              </>
+            );
+          case "USER":
+            return (
+              <>
+                <Link to="/favorites" style={{ textDecoration: "none" }}>
+                  <Button
+                    key="Favorites"
+                    sx={{ my: 2, color: "white", display: "block" }}
+                  >
+                    {intl.formatMessage({ id: "coin_tracking" })}
+                  </Button>
+                </Link>
 
-            <Link to="/users" style={{ textDecoration: "none" }}>
-              <Button
-                key="Users"
-                sx={{ my: 2, color: "white", display: "block" }}
-              >
-                {intl.formatMessage({ id: "users" })}
-              </Button>
-            </Link>
-          </>
-        );
-      case "USER":
-        return (
-          <>
-            <Link to="/favorites" style={{ textDecoration: "none" }}>
-              <Button
-                key="Favorites"
-                sx={{ my: 2, color: "white", display: "block" }}
-              >
-                {intl.formatMessage({ id: "coin_tracking" })}
-              </Button>
-            </Link>
-
-            <Link to="/portfolio" style={{ textDecoration: "none" }}>
-              <Button
-                key="Portfolio"
-                sx={{ my: 2, color: "white", display: "block" }}
-              >
-                {intl.formatMessage({ id: "portfolio" })}
-              </Button>
-            </Link>
-          </>
-        );
-      default:
-        return "";
-    }
-  };
+                <Link to="/portfolio" style={{ textDecoration: "none" }}>
+                  <Button
+                    key="Portfolio"
+                    sx={{ my: 2, color: "white", display: "block" }}
+                  >
+                    {intl.formatMessage({ id: "portfolio" })}
+                  </Button>
+                </Link>
+              </>
+            );
+          default:
+            return "";
+        }
+      }
+      setNavLinks(navLinks)
+  }, [props.role, props.isAuth, intl]);
 
   return (
     <>
