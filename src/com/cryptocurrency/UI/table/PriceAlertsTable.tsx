@@ -12,7 +12,6 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useIntl } from "react-intl";
 import { useNavigate } from "react-router-dom";
 import { CryptoState } from "../../context/CryptoContext";
-import CoinProps from "../../model/coin";
 import ErrorProps from "../../model/error";
 import PriceAlertProps from "../../model/priceAlert";
 import ResponseProps from "../../model/response";
