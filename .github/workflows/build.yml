@@ -45,13 +45,13 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Retag to latest
-        uses: ybrin/retag-docker-image@0.1.0
+        uses: tinact/docker.image-retag@1.0.3
         with:
-          name: neaktub/cryptocurrency-front
-          old_tag: latest
-          new_tag: 0.0.${{ secrets.MINOR }}
-          username: ${{ secrets.USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          image_name: neaktub/cryptocurrency-front
+          image_old_tag: latest
+          image_new_tag: 0.0.${{ secrets.MINOR }}
+          registry_username: ${{ secrets.USERNAME }}
+          registry_password: ${{ secrets.DOCKERHUB_TOKEN }}
     
       - name: Build and push
         uses: docker/build-push-action@v2
