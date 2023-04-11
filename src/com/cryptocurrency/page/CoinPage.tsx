@@ -64,7 +64,7 @@ const CoinPage = ({ role }: ICoinPageProps) => {
         console.log(err);
         setLoading(false);
       });
-  }, [currency]);
+  }, [id, currency]);
 
   //fetch user coin info
   useEffect(() => {
@@ -81,7 +81,7 @@ const CoinPage = ({ role }: ICoinPageProps) => {
         setFavorite(true);
         setPriceAlert(true);
       });
-  }, [coin]);
+  }, [id, coin]);
 
   //Modal handlers
   const [open, setOpen] = useState(false);
