@@ -18,7 +18,7 @@ const CoinChart = ({coin}: ICoinChartProps) => {
   const intl = useIntl()
 
   const [historicData, setHistoricData] = useState<number[]>();
-  const [days, setDays] = useState(1);
+  const [days, setDays] = useState<number>(1);
   const {currency} = CryptoState();
   const [flag, setFlag] = useState(false);
 
@@ -32,7 +32,7 @@ const CoinChart = ({coin}: ICoinChartProps) => {
         console.log(err)
         setFlag(false);
       });
-  }, [days]);
+  }, [coin.id, days, currency]);
 
   return (
     <Grid container spacing={1}>

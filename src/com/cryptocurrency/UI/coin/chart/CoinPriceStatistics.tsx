@@ -25,7 +25,7 @@ const CoinPriceStatistics = ({coin}: ICoinPriceStatisticsProps) => {
       .catch((err: ErrorProps) => {
         console.log(err)
       });
-  }, [currency]);
+  }, [coin.id, currency]);
 
   let date = new Date(coin.coinMarket[0].lastUpdated)
   return (
