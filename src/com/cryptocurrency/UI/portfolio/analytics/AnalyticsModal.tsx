@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
 import Modal from "@mui/material/Modal";
 import Typography from "@mui/material/Typography";
-import { useEffect, useState } from "react";
+import {useCallback, useEffect, useState} from "react";
 import { CryptoState } from "../../../context/CryptoContext";
 import ErrorProps from "../../../model/error";
 import PortfolioCoinProps from "../../../model/portfolioCoin";
@@ -60,7 +60,8 @@ const AnalyticsModal = (props: IPortfolioProps) => {
     })
   );
 
-  const fetchPortfolioAnalytics = () => {
+  const fetchPortfolioAnalytics = useCallback(
+    () => () => {
     PortfolioService.fetchPortfolioAnalytics(
       portfolioCoinDto,
       props.portfolioCoinArray.map((item: any) => item.coin.id).join(","),
@@ -69,9 +70,11 @@ const AnalyticsModal = (props: IPortfolioProps) => {
       .then((resp: ResponseProps) => setAnalytics(resp.data))
       .catch((err: ErrorProps) => console.log(err))
       .finally(() => setLoading(false));
-  };
+    },
+    [portfolioCoinDto, props.portfolioCoinArray, currency]
+  );
 
-  useEffect(() => fetchPortfolioAnalytics(), [props.openAnalytics]);
+  useEffect(() => fetchPortfolioAnalytics(), [props.openAnalytics, fetchPortfolioAnalytics]);
 
   return (
     <Modal open={props.openAnalytics} onClose={props.handleCloseAnalytics}>
