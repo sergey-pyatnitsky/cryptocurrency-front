@@ -15,13 +15,12 @@ import { useNavigate } from "react-router-dom";
 import { CryptoState } from "../../context/CryptoContext";
 import ErrorProps from "../../model/error";
 import PortfolioCoinProps from "../../model/portfolioCoin";
-import ResponseProps from "../../model/response";
 import PortfolioService from "../../service/PortfolioService";
 
 interface IPortfolioCoinTableProps {
   portfolioCoinArray: [PortfolioCoinProps];
   portfolio: any;
-  fetchPortfolio: () => void;
+  fetchPortfolio: (currency:string) => void;
 }
 
 export function numberWithCommas(x: number) {
@@ -33,12 +32,12 @@ export default function PortfolioCoinTable(props: IPortfolioCoinTableProps) {
   const intl = useIntl();
 
   const [pageSize, setPageSize] = useState<number>(5);
-  const { symbol } = CryptoState();
+  const { currency, symbol } = CryptoState();
 
   const deleteCoinFromPortfolio = useCallback(
     (portfolioId: number, coinId: string) => () => {
       PortfolioService.removePortfolioCoin(portfolioId, coinId)
-        .then((resp: ResponseProps) => props.fetchPortfolio())
+        .then(() => props.fetchPortfolio(currency))
         .catch((err: ErrorProps) => console.log(err));
     },
     []

@@ -7,6 +7,7 @@ import ErrorProps from "../../model/error";
 import PortfolioCoinDTOProps from "../../model/portfolioCoinDTO";
 import PortfolioService from "../../service/PortfolioService";
 import ChooseCoinsTable from "../table/ChooseCoinsTable";
+import {CryptoState} from "../../context/CryptoContext";
 
 const style = {
   position: "absolute" as "absolute",
@@ -26,11 +27,12 @@ interface IAddCoinPortfolioModalProps {
   handleCloseAdd: () => void;
   openAdd: boolean;
   portfolioName: string;
-  fetchPortfolio: () => void;
+  fetchPortfolio: (currency:string) => void;
 }
 
 const AddCoinPortfolioModal = (props: IAddCoinPortfolioModalProps) => {
   const intl = useIntl();
+  const { currency } = CryptoState();
   const [portfolioCoinDto, setPortfolioCoinDto] =
     useState<PortfolioCoinDTOProps>({} as PortfolioCoinDTOProps);
 
@@ -40,7 +42,7 @@ const AddCoinPortfolioModal = (props: IAddCoinPortfolioModalProps) => {
       portfolioName: props.portfolioName,
     });
     PortfolioService.addPortfolioCoin(portfolioCoinDto)
-      .then(() => props.fetchPortfolio())
+      .then(() => props.fetchPortfolio(currency))
       .catch((err: ErrorProps) => console.log(err));
   };
 

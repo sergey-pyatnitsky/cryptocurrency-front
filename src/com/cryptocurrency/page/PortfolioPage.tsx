@@ -9,6 +9,7 @@ import ResponseProps from "../model/response";
 import PortfolioService from "../service/PortfolioService";
 import { numberWithCommas } from "../UI/table/CoinsTable";
 import { useIntl } from "react-intl";
+import PortfolioCoin from "../model/portfolioCoin";
 
 const PortfolioPage = () => {
   const intl = useIntl();
@@ -28,7 +29,7 @@ const PortfolioPage = () => {
 
   const { currency, symbol } = CryptoState();
 
-  const fetchPortfolio = () => {
+  const fetchPortfolio = (currency:string) => {
     PortfolioService.fetchAllPortfolio(
       sessionStorage.getItem("username"),
       currency
@@ -41,51 +42,39 @@ const PortfolioPage = () => {
       });
   };
 
-  useEffect(() => fetchPortfolio(), [currency]);
+  useEffect(() => fetchPortfolio(currency), [currency]);
 
-  useEffect(() => CalculateStatData(), [portfolio]);
+  useEffect(() => CalculateStatData(portfolio), [portfolio]);
 
-  const CalculateStatData = () => {
-    let totalSum = 0;
-    portfolio.map((item: any) => {
-      totalSum =
-        totalSum +
-        item.portfolioCoins.reduce(
-          (partialSum: number, portfolioCoin: any) =>
-            partialSum +
-            portfolioCoin.coin.coinMarket[0].currentPrice *
-              portfolioCoin.quantity,
-          0
-        );
-    });
+  const CalculateStatData = (portfolio:PortfolioProps[]) => {
+    let totalSum = portfolio.reduce(
+        (portfolio_sum :number, portfolio:PortfolioProps) => portfolio_sum +
+            portfolio.portfolioCoins.reduce(
+                (partialSum:number, portfolio_coin:PortfolioCoin) => partialSum +
+                    portfolio_coin.coin.coinMarket[0].currentPrice *
+                    portfolio_coin.quantity
+                , 0)
+        , 0);
 
-    let cost = 0;
-    portfolio.map((item: any) => {
-      cost =
-        cost +
-        item.portfolioCoins.reduce(
-          (partialSum: number, portfolioCoin: any) =>
-            partialSum + portfolioCoin.buyPrice * portfolioCoin.quantity,
-          0
-        );
-    });
+    let cost = portfolio.reduce(
+        (portfolio_sum :number, portfolio:PortfolioProps) => portfolio_sum +
+            portfolio.portfolioCoins.reduce(
+                (portfolio_coin_sum:number, portfolio_coin:PortfolioCoin) => portfolio_coin_sum +
+                    portfolio_coin.buyPrice*portfolio_coin.quantity, 0)
+        , 0);
 
     let totalProfitLoss = totalSum - cost;
     let totalProfitLossPercentages = cost / totalSum;
 
-    let prevDayTotalSum = 0;
-    portfolio.map((item: any) => {
-      prevDayTotalSum =
-        prevDayTotalSum +
-        item.portfolioCoins.reduce(
-          (partialSum: number, portfolioCoin: any) =>
-            partialSum +
-            (1 - portfolioCoin.coin.coinMarket[0].priceChangePercentage24h) *
-              portfolioCoin.coin.coinMarket[0].currentPrice *
-              portfolioCoin.quantity,
-          0
-        );
-    });
+    let prevDayTotalSum = portfolio.reduce(
+        (portfolio_sum :number, portfolio:PortfolioProps) => portfolio_sum +
+            portfolio.portfolioCoins.reduce(
+                (partialSum:number, portfolio_coin:PortfolioCoin) => partialSum +
+                    (1 - portfolio_coin.coin.coinMarket[0].priceChangePercentage24h) *
+                    portfolio_coin.coin.coinMarket[0].currentPrice *
+                    portfolio_coin.quantity
+                , 0)
+        , 0);
 
     let prevDayTotalSumChange = totalSum - prevDayTotalSum;
     let prevDateChangePercentages = prevDayTotalSum / totalSum;
@@ -246,7 +235,7 @@ const PortfolioPage = () => {
         return (
           <PortfolioCard
             portfolio={portfolio[key]}
-            fetchPortfolio={fetchPortfolio}
+            fetchPortfolio={()=>fetchPortfolio(currency)}
             key={rowPortfolio.id}
           />
         );

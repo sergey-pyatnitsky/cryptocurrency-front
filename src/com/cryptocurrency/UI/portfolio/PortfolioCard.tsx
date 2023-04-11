@@ -11,7 +11,7 @@ import { useIntl } from "react-intl";
 
 interface IPortfolioProps {
   portfolio: PortfolioProps;
-  fetchPortfolio: () => void;
+  fetchPortfolio: (currency:string) => void;
 }
 
 const PortfolioCard = (props: IPortfolioProps) => {
@@ -28,7 +28,7 @@ const PortfolioCard = (props: IPortfolioProps) => {
   const [openGraph, setOpenGraph] = useState<boolean>(false);
   const handleClickGraphBtn = () => setOpenGraph(!openGraph);
 
-  const { symbol } = CryptoState();
+  const { currency, symbol } = CryptoState();
 
   const [stat, setState] = useState({
     totalSum: 0,
@@ -100,7 +100,7 @@ const PortfolioCard = (props: IPortfolioProps) => {
             handleCloseAdd={handleCloseAdd}
             openAdd={openAdd}
             portfolioName={props.portfolio.name}
-            fetchPortfolio={props.fetchPortfolio}
+            fetchPortfolio={() => props.fetchPortfolio(currency)}
           />
 
           {props.portfolio.portfolioCoins.length > 1 ? (
@@ -256,7 +256,7 @@ const PortfolioCard = (props: IPortfolioProps) => {
         <PortfolioCoinTable
           portfolioCoinArray={props.portfolio.portfolioCoins}
           portfolio={props.portfolio}
-          fetchPortfolio={props.fetchPortfolio}
+          fetchPortfolio={() => props.fetchPortfolio(currency)}
         />
       )}
     </>
