@@ -10,7 +10,6 @@ const Crypto = createContext({} as IContextProps);
 
 const CryptoContext = ({ children }: any) => {
   const currencyFromStorage = localStorage.getItem("currency");
-  const currencySymbol = currencyFromStorage == "USD" ? "$" : "€"
   const [currency, setCurrency] = useState<string>(currencyFromStorage != null ? currencyFromStorage : "USD");
   const [symbol, setSymbol] = useState("$");
 
