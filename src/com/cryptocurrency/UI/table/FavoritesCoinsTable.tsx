@@ -54,22 +54,25 @@ export default function FavoritesCoinsTable() {
     ? (locale = ruRU.components.MuiDataGrid.defaultProps.localeText)
     : (locale = undefined);
 
+  const fetchFavoriteCoins = useCallback(
+    () => () => {
+      CoinService.fetchFavoriteCoins(sessionStorage.getItem("username"), currency)
+        .then((resp: ResponseProps) => {
+          setCoins(resp.data);
+          setLoading(false);
+        })
+        .catch((err: ErrorProps) => {
+          console.log(err);
+          setLoading(false);
+        });
+    },
+    [currency]
+  );
+
   useEffect(() => {
     setLoading(true);
     fetchFavoriteCoins();
-  }, [currency]);
-
-  const fetchFavoriteCoins = () => {
-    CoinService.fetchFavoriteCoins(sessionStorage.getItem("username"), currency)
-      .then((resp: ResponseProps) => {
-        setCoins(resp.data);
-        setLoading(false);
-      })
-      .catch((err: ErrorProps) => {
-        console.log(err);
-        setLoading(false);
-      });
-  };
+  }, [fetchFavoriteCoins, currency]);
 
   const deleteFavoriteCoin = useCallback(
     (coin_id: GridRowId) => () => {
@@ -84,7 +87,7 @@ export default function FavoritesCoinsTable() {
         })
         .catch((err: ErrorProps) => console.log(err));
     },
-    []
+    [fetchFavoriteCoins]
   );
 
   const columns = useMemo<GridColumns>(
@@ -193,7 +196,7 @@ export default function FavoritesCoinsTable() {
         ],
       },
     ],
-    []
+    [deleteFavoriteCoin, intl, symbol]
   );
 
   return (
