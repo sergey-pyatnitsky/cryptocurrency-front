@@ -194,7 +194,7 @@ const PriceAlertsTable = () => {
         ],
       },
     ],
-    []
+    [intl, symbol, deletePriceAlert]
   );
 
   return (
