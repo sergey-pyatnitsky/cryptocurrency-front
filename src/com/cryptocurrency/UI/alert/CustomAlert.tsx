@@ -16,9 +16,9 @@ const CustomAlert = (errorProps: IProps) => {
   const intl = useIntl()
 
   let alertTitle: string
-  if(errorProps.severity == 'error')
+  if(errorProps.severity === 'error')
     alertTitle = intl.formatMessage({id: 'error'})
-  else if(errorProps.severity == 'success')
+  else if(errorProps.severity === 'success')
     alertTitle = intl.formatMessage({id: 'success'})
   else alertTitle = intl.formatMessage({id: 'warning'})
 
