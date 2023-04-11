@@ -161,7 +161,7 @@ export default function CoinsTable() {
         console.log(err);
         setLoading(false);
       });
-  }, [currency]);
+  }, [currency, search]);
 
   return (
     <Container style={{ textAlign: "center", marginBottom: 40 }}>
