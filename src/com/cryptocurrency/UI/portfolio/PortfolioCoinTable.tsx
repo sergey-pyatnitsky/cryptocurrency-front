@@ -40,7 +40,7 @@ export default function PortfolioCoinTable(props: IPortfolioCoinTableProps) {
         .then(() => props.fetchPortfolio(currency))
         .catch((err: ErrorProps) => console.log(err));
     },
-    []
+    [currency, props]
   );
 
   const rows: GridRowsProp = props.portfolioCoinArray.map(
@@ -182,7 +182,7 @@ export default function PortfolioCoinTable(props: IPortfolioCoinTableProps) {
         ],
       },
     ],
-    [deleteCoinFromPortfolio]
+    [deleteCoinFromPortfolio, props.portfolio.id, intl, symbol]
   );
 
   let locale;
