@@ -59,7 +59,7 @@ jobs:
           context: ./
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.REACTUSERNAME }}/cryptocurrency-front:latest
+          tags: ${{ secrets.USERNAME }}/cryptocurrency-front:latest
           
       - name: Update Minor version
         uses: hmanzur/actions-set-secret@v2.0.0
