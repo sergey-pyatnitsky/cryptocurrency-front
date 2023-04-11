@@ -1,6 +1,6 @@
 import DonutSmallIcon from "@mui/icons-material/DonutSmall";
 import { Box, Button, Grid, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+import {useCallback, useEffect, useState} from "react";
 import { CryptoState } from "../../context/CryptoContext";
 import PortfolioProps from "../../model/portfolio";
 import PieChart from "../table/PieChart";
@@ -38,48 +38,48 @@ const PortfolioCard = (props: IPortfolioProps) => {
     totalProfitLossPercentages: 0,
   });
 
-  useEffect(() => {
-    CalculateStatData();
-    console.log(stat);
-  }, [props.portfolio]);
+  const CalculateStatData = useCallback(
+    () => () => {
+      let totalSum = props.portfolio.portfolioCoins.reduce(
+        (partialSum: number, portfolioCoin: any) =>
+          partialSum +
+          portfolioCoin.coin.coinMarket[0].currentPrice * portfolioCoin.quantity,
+        0
+      );
 
-  const CalculateStatData = () => {
-    let totalSum = props.portfolio.portfolioCoins.reduce(
-      (partialSum: number, portfolioCoin: any) =>
-        partialSum +
-        portfolioCoin.coin.coinMarket[0].currentPrice * portfolioCoin.quantity,
-      0
-    );
+      let cost = props.portfolio.portfolioCoins.reduce(
+        (partialSum: number, portfolioCoin: any) =>
+          partialSum + portfolioCoin.buyPrice * portfolioCoin.quantity,
+        0
+      );
 
-    let cost = props.portfolio.portfolioCoins.reduce(
-      (partialSum: number, portfolioCoin: any) =>
-        partialSum + portfolioCoin.buyPrice * portfolioCoin.quantity,
-      0
-    );
+      let totalProfitLoss = totalSum - cost;
+      let totalProfitLossPercentages = cost / totalSum;
 
-    let totalProfitLoss = totalSum - cost;
-    let totalProfitLossPercentages = cost / totalSum;
-
-    let prevDayTotalSum = props.portfolio.portfolioCoins.reduce(
-      (partialSum: number, portfolioCoin: any) =>
-        partialSum +
-        (1 - portfolioCoin.coin.coinMarket[0].priceChangePercentage24h) *
+      let prevDayTotalSum = props.portfolio.portfolioCoins.reduce(
+        (partialSum: number, portfolioCoin: any) =>
+          partialSum +
+          (1 - portfolioCoin.coin.coinMarket[0].priceChangePercentage24h) *
           portfolioCoin.coin.coinMarket[0].currentPrice *
           portfolioCoin.quantity,
-      0
-    );
+        0
+      );
 
-    let prevDayTotalSumChange = totalSum - prevDayTotalSum;
-    let prevDateChangePercentages = prevDayTotalSum / totalSum;
+      let prevDayTotalSumChange = totalSum - prevDayTotalSum;
+      let prevDateChangePercentages = prevDayTotalSum / totalSum;
 
-    setState({
-      totalSum: totalSum,
-      prevDayTotalSumChange: prevDayTotalSumChange,
-      prevDateChangePercentages: prevDateChangePercentages,
-      totalProfitLoss: totalProfitLoss,
-      totalProfitLossPercentages: totalProfitLossPercentages,
-    });
-  };
+      setState({
+        totalSum: totalSum,
+        prevDayTotalSumChange: prevDayTotalSumChange,
+        prevDateChangePercentages: prevDateChangePercentages,
+        totalProfitLoss: totalProfitLoss,
+        totalProfitLossPercentages: totalProfitLossPercentages,
+      });
+    },
+    [props.portfolio.portfolioCoins]
+  );
+
+  useEffect(() => CalculateStatData(), [props.portfolio, CalculateStatData]);
 
   return (
     <>
